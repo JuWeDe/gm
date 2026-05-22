@@ -1,459 +1,488 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Доброе утро, Маша ☀️</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lora:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
-<style>
-:root {
-  --cream: #fdf6ed;
-  --warm: #f5e6cc;
-  --peach: #f0c9a0;
-  --blush: #e8a882;
-  --rose: #c97a5a;
-  --brown: #8b5e3c;
-  --ink: #2d1f0e;
-  --ink2: #5c3d22;
-  --muted: #9a7a5a;
-  --border: rgba(201,122,90,0.15);
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Воскресенье в Лужниках</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #08080a 0%, #121217 100%);
+            --card-bg: rgba(26, 26, 36, 0.6);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --text-primary: #ffffff;
+            --text-secondary: #9aa0b0;
+            --accent-glow: #deff9a;
+            --accent-gradient: linear-gradient(90deg, #deff9a 0%, #a8ffb2 100%);
+            --tg-color: #2481cc;
+            --radius-lg: 24px;
+            --radius-md: 14px;
+        }
 
-*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
-html { height:100%; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
 
-body {
-  background: var(--cream);
-  min-height: 100vh;
-  font-family: 'Lora', serif;
-  overflow-x: hidden;
-  position: relative;
-}
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-secondary);
+            padding: 40px 16px;
+            min-height: 100vh;
+            display: block;
+        }
 
-.bg {
-  position: fixed; inset: 0; z-index: 0;
-  background:
-    radial-gradient(ellipse 80% 55% at 50% -5%, rgba(240,201,160,0.55) 0%, transparent 65%),
-    radial-gradient(ellipse 40% 30% at 85% 75%, rgba(232,168,130,0.18) 0%, transparent 50%),
-    linear-gradient(175deg, #fdf6ed 0%, #f9eedc 60%, #f5e6cc 100%);
-}
+        .main-container {
+            max-width: 460px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 40px 24px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
 
-/* Floaters */
-.floats { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
-.dot {
-  position: absolute; border-radius: 50%;
-  animation: dotFloat var(--d,8s) ease-in-out infinite;
-  animation-delay: var(--dl,0s); opacity: 0;
-}
-@keyframes dotFloat {
-  0%,100% { opacity:0; transform:translateY(0) scale(.8); }
-  20%,80% { opacity:var(--op,.3); }
-  50% { transform:translateY(var(--ty,-28px)) scale(1); }
-}
-.sym {
-  position: absolute; font-size: var(--sz,12px);
-  animation: symFloat var(--d,14s) ease-in-out infinite;
-  animation-delay: var(--dl,0s); opacity: 0;
-}
-@keyframes symFloat {
-  0% { opacity:0; transform:translateY(40px) rotate(0deg); }
-  15%,85% { opacity:var(--op,.35); }
-  100% { opacity:0; transform:translateY(var(--ty,-120px)) rotate(var(--rot,30deg)); }
-}
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+            position: relative;
+        }
 
-/* Wrap */
-.wrap {
-  position: relative; z-index: 2;
-  max-width: 460px; margin: 0 auto;
-  padding: 44px 26px 68px;
-  display: flex; flex-direction: column; align-items: center;
-}
+        .glow-orb {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(222, 255, 154, 0.15) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
 
-/* ── SUN (CSS only, no JS rays) ── */
-.sun-wrap {
-  margin-bottom: 10px;
-  opacity: 0; animation: fadeUp .9s ease .2s forwards;
-}
-.sun-outer {
-  width: 88px; height: 88px;
-  position: relative;
-  display: flex; align-items: center; justify-content: center;
-}
+        .date-tag {
+            display: inline-block;
+            background: rgba(222, 255, 154, 0.08);
+            border: 1px solid rgba(222, 255, 154, 0.2);
+            color: var(--accent-glow);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 30px;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 12px rgba(222, 255, 154, 0.05);
+        }
 
-/* Rays via conic-gradient rotating ring */
-.sun-rays-ring {
-  position: absolute; inset: 0;
-  border-radius: 50%;
-  background: conic-gradient(
-    rgba(245,200,66,0) 0deg,
-    rgba(245,200,66,0.6) 8deg,
-    rgba(245,200,66,0) 16deg,
-    rgba(245,200,66,0) 46deg,
-    rgba(245,200,66,0.6) 54deg,
-    rgba(245,200,66,0) 62deg,
-    rgba(245,200,66,0) 92deg,
-    rgba(245,200,66,0.6) 100deg,
-    rgba(245,200,66,0) 108deg,
-    rgba(245,200,66,0) 136deg,
-    rgba(245,200,66,0.6) 144deg,
-    rgba(245,200,66,0) 152deg,
-    rgba(245,200,66,0) 182deg,
-    rgba(245,200,66,0.6) 190deg,
-    rgba(245,200,66,0) 198deg,
-    rgba(245,200,66,0) 226deg,
-    rgba(245,200,66,0.6) 234deg,
-    rgba(245,200,66,0) 242deg,
-    rgba(245,200,66,0) 272deg,
-    rgba(245,200,66,0.6) 280deg,
-    rgba(245,200,66,0) 288deg,
-    rgba(245,200,66,0) 316deg,
-    rgba(245,200,66,0.6) 324deg,
-    rgba(245,200,66,0) 332deg,
-    rgba(245,200,66,0) 360deg
-  );
-  animation: sunSpin 16s linear infinite;
-  -webkit-mask: radial-gradient(circle, transparent 34%, black 38%, black 50%, transparent 52%);
-  mask: radial-gradient(circle, transparent 34%, black 38%, black 50%, transparent 52%);
-}
-@keyframes sunSpin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+            background: linear-gradient(180deg, #ffffff 0%, #b5b5c0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-.sun-core {
-  width: 46px; height: 46px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #fce168, #f5c030 60%, #e89820);
-  box-shadow:
-    0 0 0 6px rgba(245,200,66,0.15),
-    0 0 30px rgba(245,200,66,0.5),
-    0 0 60px rgba(245,180,50,0.2);
-  position: relative; z-index: 2;
-  animation: corePulse 3.5s ease-in-out infinite;
-}
-@keyframes corePulse {
-  0%,100% { box-shadow: 0 0 0 6px rgba(245,200,66,0.15), 0 0 28px rgba(245,200,66,0.45), 0 0 55px rgba(245,180,50,0.18); }
-  50% { box-shadow: 0 0 0 10px rgba(245,200,66,0.12), 0 0 44px rgba(245,200,66,0.6), 0 0 80px rgba(245,180,50,0.25); }
-}
+        .lead-text {
+            font-size: 14px;
+            color: #6e7280;
+            line-height: 1.6;
+        }
 
-/* ── HEADER ── */
-.header { text-align: center; margin-bottom: 28px; }
-.good-morning {
-  font-size: 10px; letter-spacing: .42em; text-transform: uppercase;
-  color: var(--rose); margin-bottom: 10px;
-  opacity: 0; animation: fadeUp .8s ease .42s forwards;
-}
-.name {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(50px, 13vw, 68px); font-weight: 700;
-  line-height: 1; letter-spacing: -.02em; color: var(--ink);
-  opacity: 0; animation: fadeUp .8s ease .56s forwards;
-}
-.name em { font-style: italic; color: var(--rose); }
-.tagline {
-  font-size: 17px; font-style: italic; font-weight: 300;
-  color: var(--muted); line-height: 1.55; margin-top: 11px;
-  opacity: 0; animation: fadeUp .8s ease .7s forwards;
-}
+        .step-title {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.3);
+            margin: 35px 0 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-/* ── DIV ── */
-.div {
-  display: flex; align-items: center; gap: 14px;
-  width: 100%; margin: 24px 0;
-}
-.div-l { flex:1; height:1px; background:linear-gradient(to right,transparent,var(--peach),transparent); }
-.div-d { color: var(--peach); font-size: 11px; flex-shrink:0; }
-.div.a { opacity:0; animation:fadeIn .8s ease .84s forwards; }
-.div.b { opacity:0; animation:fadeIn .8s ease 1.5s forwards; }
-.div.c { opacity:0; animation:fadeIn .8s ease 1.95s forwards; }
+        .step-title::after {
+            content: '';
+            flex-grow: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.05);
+        }
 
-/* ── CAT CARD ── */
-.cat-card {
-  background: rgba(255,252,248,0.88);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 24px 24px 20px;
-  width: 100%;
-  box-shadow: 0 6px 32px rgba(139,94,60,0.07);
-  opacity: 0; animation: fadeUp .8s ease 1s forwards;
-  position: relative; overflow: hidden;
-  margin-bottom: 16px;
-}
-.cat-card::before {
-  content: '';
-  position: absolute; top:0; left:0; right:0; height:3px;
-  background: linear-gradient(to right, var(--peach), var(--blush), var(--rose));
-}
-.cat-row { display:flex; align-items:flex-end; gap:18px; }
-.cat-svg-wrap { flex-shrink:0; animation: catBob 4.5s ease-in-out infinite; }
-@keyframes catBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
-.cat-text { flex:1; }
-.cat-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 21px; font-style: italic; color: var(--ink); margin-bottom: 5px;
-}
-.cat-name span { color: var(--rose); }
-.cat-desc {
-  font-size: 14px; font-style: italic; font-weight: 300;
-  color: var(--muted); line-height: 1.55;
-}
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 10px;
+        }
 
-/* ── NOTES (only 2) ── */
-.notes { display:flex; flex-direction:column; gap:10px; width:100%; margin-bottom:16px; }
-.note {
-  background: rgba(255,252,248,0.82);
-  border: 1px solid var(--border);
-  border-radius: 14px; padding: 16px 18px;
-  display: flex; align-items: flex-start; gap: 12px;
-  box-shadow: 0 3px 14px rgba(139,94,60,0.04);
-  opacity: 0;
-}
-.note:nth-child(1){ animation: fadeUp .65s ease 1.15s forwards; }
-.note:nth-child(2){ animation: fadeUp .65s ease 1.28s forwards; }
-.note-ico { font-size: 22px; line-height:1; flex-shrink:0; margin-top:1px; }
-.note-body { flex:1; }
-.note-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 13.5px; font-weight: 700; color: var(--ink2); margin-bottom: 2px;
-}
-.note-text { font-size: 13.5px; font-style:italic; font-weight:300; color:var(--muted); line-height:1.5; }
+        .option-button {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 16px 0;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            outline: none;
+        }
 
-/* ── HEAT CARD ── */
-.heat-card {
-  background: linear-gradient(135deg, rgba(240,201,160,0.25), rgba(232,168,130,0.15));
-  border: 1px solid rgba(201,122,90,0.22);
-  border-radius: 14px; padding: 18px 20px;
-  width: 100%; display: flex; align-items: center; gap: 14px;
-  margin-bottom: 16px;
-  opacity: 0; animation: fadeUp .7s ease 1.42s forwards;
-}
-.heat-ico { font-size: 28px; flex-shrink:0; }
-.heat-text { flex:1; }
-.heat-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 14px; font-weight:700; color:var(--ink2); margin-bottom:3px;
-}
-.heat-desc { font-size: 13.5px; font-style:italic; color:var(--muted); line-height:1.5; }
+        .option-button:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-1px);
+        }
 
-/* ── COFFEE ── */
-.coffee-wrap {
-  display: flex; justify-content: center; margin: 20px 0;
-  opacity: 0; animation: fadeUp .8s ease 1.6s forwards;
-}
-.coffee-scene { position: relative; width: 70px; height: 80px; }
-.coffee-cup {
-  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-  font-size: 42px; line-height:1;
-  filter: drop-shadow(0 3px 10px rgba(139,94,60,0.18));
-  animation: cupRock 6s ease-in-out infinite;
-}
-@keyframes cupRock { 0%,100%{transform:translateX(-50%) rotate(-1.5deg)} 50%{transform:translateX(-50%) rotate(1.5deg)} }
-.steam-wrap {
-  position: absolute; bottom: 40px; left:50%; transform:translateX(-50%);
-  display:flex; gap:5px;
-}
-.steam {
-  width: 2.5px; height: 20px;
-  background: linear-gradient(to top, rgba(201,122,90,.35), transparent);
-  border-radius: 3px;
-  animation: steamUp 2.4s ease-in-out infinite;
-  animation-delay: var(--sd,0s);
-  transform-origin: bottom;
-}
-@keyframes steamUp {
-  0%{ transform:scaleY(.2) translateY(0); opacity:0; }
-  35%{ opacity:.65; }
-  100%{ transform:scaleY(1.1) translateY(-16px); opacity:0; }
-}
+        .option-button.active-state {
+            background: var(--accent-gradient);
+            border-color: var(--accent-glow);
+            color: #000000;
+            box-shadow: 0 8px 24px rgba(222, 255, 154, 0.25);
+            transform: translateY(-1px);
+        }
 
-/* ── MESSAGE ── */
-.msg-card {
-  background: linear-gradient(135deg, rgba(201,122,90,.1), rgba(240,201,160,.13));
-  border: 1px solid rgba(201,122,90,.22);
-  border-radius: 18px; padding: 28px 24px;
-  width: 100%; text-align: center;
-  opacity: 0; animation: fadeUp .8s ease 1.75s forwards;
-  box-shadow: 0 6px 32px rgba(139,94,60,.07);
-}
-.msg-quote {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(20px,5.5vw,27px); font-style: italic;
-  color: var(--ink); line-height: 1.45; margin-bottom: 14px;
-}
-.msg-quote em { color: var(--rose); font-style: normal; }
-.msg-sign { font-size: 12.5px; font-style: italic; color: var(--muted); }
+        .cards-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
 
-/* Footer */
-.footer {
-  text-align: center; margin-top: 28px;
-  opacity: 0; animation: fadeIn 1s ease 2.1s forwards;
-}
-.footer p { font-size: 12px; font-style:italic; color:var(--muted); opacity:.65; }
+        .restaurant-item {
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-md);
+            padding: 22px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.01);
+            position: relative;
+            overflow: hidden;
+        }
 
-@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-@keyframes fadeIn { from{opacity:0} to{opacity:1} }
-</style>
+        .restaurant-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(222, 255, 154, 0.03) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .restaurant-item:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .restaurant-item.active-state {
+            border-color: rgba(222, 255, 154, 0.4);
+            background: rgba(222, 255, 154, 0.02);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(222, 255, 154, 0.06);
+        }
+
+        .restaurant-item.active-state::before {
+            opacity: 1;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.3px;
+        }
+
+        .card-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #52525b;
+            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+
+        .mini-badge {
+            font-size: 11px;
+            background: rgba(255, 255, 255, 0.03);
+            color: #a1a1aa;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .mini-badge.main-tag {
+            background: rgba(222, 255, 154, 0.06);
+            color: var(--accent-glow);
+            border-color: rgba(222, 255, 154, 0.1);
+        }
+
+        .card-info {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            line-height: 1.55;
+            margin-bottom: 12px;
+        }
+
+        .card-highlight {
+            font-size: 12.5px;
+            color: var(--accent-glow);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .checkmark-icon {
+            position: absolute;
+            top: 22px;
+            right: 22px;
+            width: 18px;
+            height: 18px;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.6);
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .checkmark-icon::after {
+            content: '';
+            width: 4px;
+            height: 8px;
+            border: solid #000;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            margin-top: -2px;
+        }
+
+        .restaurant-item.active-state .checkmark-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .footer-action {
+            margin-top: 35px;
+        }
+
+        .launch-link {
+            display: block;
+            width: 100%;
+            background: #202024;
+            color: #4b4b54;
+            text-align: center;
+            padding: 18px;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+
+        .launch-link.ready-to-send {
+            background: var(--accent-gradient);
+            color: #000000;
+            box-shadow: 0 10px 30px rgba(222, 255, 154, 0.2);
+            pointer-events: auto;
+            cursor: pointer;
+            border: none;
+        }
+
+        .launch-link.ready-to-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(222, 255, 154, 0.3);
+        }
+    </style>
 </head>
 <body>
 
-<div class="bg"></div>
-<div class="floats" id="fl"></div>
+<div class="main-container">
+    <header>
+        <div class="glow-orb"></div>
+        <div class="date-tag">Воскресенье • 24 мая</div>
+        <h1>Планы на Лужники</h1>
+        <p class="lead-text">Выбери время и формат нашего ужина на верандах гастрокластера</p>
+    </header>
 
-<div class="wrap">
-
-  <!-- Sun -->
-  <div class="sun-wrap">
-    <div class="sun-outer">
-      <div class="sun-rays-ring"></div>
-      <div class="sun-core"></div>
+    <div class="step-title">1. Время встречи</div>
+    <div class="grid-layout">
+        <button class="option-button" onclick="setTime('15:30')">15:30</button>
+        <button class="option-button" onclick="setTime('17:00')">17:00</button>
+        <button class="option-button" onclick="setTime('18:30')">18:30</button>
     </div>
-  </div>
-
-  <!-- Header -->
-  <div class="header">
-    <div class="good-morning">Доброе утро</div>
-    <div class="name"><em>Маша</em></div>
-    <p class="tagline">Надеюсь, ты выспалась —<br>и Лудик тоже 🐱</p>
-  </div>
-
-  <div class="div a"><div class="div-l"></div><div class="div-d">✦</div><div class="div-l"></div></div>
-
-  <!-- Cat -->
-  <div class="cat-card">
-    <div class="cat-row">
-      <div class="cat-svg-wrap">
-        <svg width="76" height="76" viewBox="0 0 80 80" fill="none">
-          <!-- Fluffy body -->
-          <ellipse cx="40" cy="54" rx="26" ry="18" fill="#a8b2be"/>
-          <ellipse cx="40" cy="54" rx="22" ry="14" fill="#c8d0d8"/>
-          <ellipse cx="40" cy="58" rx="10" ry="7" fill="#dde2e8" opacity=".7"/>
-          <!-- Fluffy head -->
-          <ellipse cx="40" cy="34" rx="19" ry="17" fill="#a8b2be"/>
-          <ellipse cx="40" cy="35" rx="15" ry="13" fill="#c8d0d8"/>
-          <!-- Ear tufts -->
-          <polygon points="21,21 16,8 30,17" fill="#9aa4b0"/>
-          <polygon points="22,20 19,11 27,17" fill="#c8a0b0"/>
-          <polygon points="59,21 64,8 50,17" fill="#9aa4b0"/>
-          <polygon points="58,20 61,11 53,17" fill="#c8a0b0"/>
-          <!-- Fur wisps -->
-          <ellipse cx="23" cy="30" rx="5" ry="3" fill="#b0bac6" opacity=".55"/>
-          <ellipse cx="57" cy="30" rx="5" ry="3" fill="#b0bac6" opacity=".55"/>
-          <ellipse cx="40" cy="21" rx="6" ry="3" fill="#bcc4d0" opacity=".45"/>
-          <!-- Sleeping eyes -->
-          <path d="M32,33 Q35,30 38,33" stroke="#404858" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-          <path d="M42,33 Q45,30 48,33" stroke="#404858" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-          <!-- Nose -->
-          <ellipse cx="40" cy="37" rx="2.5" ry="2" fill="#c88090"/>
-          <!-- Mouth -->
-          <path d="M37.5,39 Q40,41 42.5,39" stroke="#404858" stroke-width="1.1" fill="none" stroke-linecap="round"/>
-          <!-- Whiskers -->
-          <line x1="18" y1="36" x2="33" y2="38" stroke="#7a8898" stroke-width=".8" opacity=".6"/>
-          <line x1="18" y1="39" x2="33" y2="39" stroke="#7a8898" stroke-width=".8" opacity=".6"/>
-          <line x1="47" y1="38" x2="62" y2="36" stroke="#7a8898" stroke-width=".8" opacity=".6"/>
-          <line x1="47" y1="39" x2="62" y2="39" stroke="#7a8898" stroke-width=".8" opacity=".6"/>
-          <!-- Fluffy tail -->
-          <path d="M64,54 Q74,48 72,60 Q70,67 62,63" stroke="#9aa4b0" stroke-width="7" fill="none" stroke-linecap="round"/>
-          <path d="M64,54 Q74,48 72,60 Q70,67 62,63" stroke="#c8d0d8" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-          <!-- Paws -->
-          <ellipse cx="28" cy="67" rx="7" ry="4" fill="#bcc4d0"/>
-          <ellipse cx="52" cy="67" rx="7" ry="4" fill="#bcc4d0"/>
-          <!-- Zzz -->
-          <text x="57" y="20" fill="#7a8898" font-size="9" font-family="Georgia,serif" opacity=".7">z</text>
-          <text x="63" y="14" fill="#7a8898" font-size="7" font-family="Georgia,serif" opacity=".5">z</text>
-          <text x="68" y="9" fill="#7a8898" font-size="5" font-family="Georgia,serif" opacity=".35">z</text>
-        </svg>
-      </div>
-      <div class="cat-text">
-        <div class="cat-name">Лудик <span>♡</span></div>
-        <div class="cat-desc">Надеюсь он уже позволил тебе поспать. Хотя вряд ли.</div>
-      </div>
+    <div class="grid-layout" style="margin-top: 8px;">
+        <button class="option-button" onclick="setTime('19:30')">19:30</button>
+        <button class="option-button" onclick="setTime('20:30')">20:30</button>
+        <button class="option-button" onclick="setTime('Обсудим')">Другое</button>
     </div>
-  </div>
 
-  <!-- 2 notes only -->
-  <div class="notes">
-    <div class="note">
-      <div class="note-ico">☕</div>
-      <div class="note-body">
-        <div class="note-title">Выпей латте</div>
-        <div class="note-text">Если почувствуешь усталость — латте спасёт, проверено</div>
-      </div>
+    <div class="step-title">2. Атмосфера и локация</div>
+    <div class="cards-stack">
+        
+        <div class="restaurant-item" id="item-1" onclick="setVenue(1, 'Loona')">
+            <div class="checkmark-icon"></div>
+            <div class="card-top">
+                <span class="card-name">Loona</span>
+                <span class="card-label">РЕСТОРАН</span>
+            </div>
+            <div class="badge-row">
+                <span class="mini-badge main-tag">Итальянская</span>
+                <span class="mini-badge">Панорамные окна</span>
+                <span class="mini-badge">Вайбово</span>
+            </div>
+            <p class="card-info">Очень красивый флагманский проект. Обилие живой зелени, дровяная печь, роскошный интерьер и топовая домашняя паста.</p>
+            <div class="card-highlight">🔥 Особенность: Стильный, легкий и эстетичный вечер.</div>
+        </div>
+
+        <div class="restaurant-item" id="item-2" onclick="setVenue(2, 'The Villa')">
+            <div class="checkmark-icon"></div>
+            <div class="card-top">
+                <span class="card-name">The Villa</span>
+                <span class="card-label">РЕСТОРАН</span>
+            </div>
+            <div class="badge-row">
+                <span class="mini-badge main-tag">Европейская & Гриль</span>
+                <span class="mini-badge">Загородная усадьба</span>
+            </div>
+            <p class="card-info">Шикарный двухэтажный особняк. Создает ощущение отдыха на дорогой загородной вилле. Мясо на гриле, стейки и паста.</p>
+            <div class="card-highlight">🔥 Особенность: Спокойная, уединенная и статусная обстановка.</div>
+        </div>
+
+        <div class="restaurant-item" id="item-3" onclick="setVenue(3, 'Магадан')">
+            <div class="checkmark-icon"></div>
+            <div class="card-top">
+                <span class="card-name">Магадан</span>
+                <span class="card-label">РЕСТОРАН</span>
+            </div>
+            <div class="badge-row">
+                <span class="mini-badge main-tag">Морепродукты</span>
+                <span class="mini-badge">Огромная веранда</span>
+            </div>
+            <p class="card-info">Легендарный проект прямо на набережной. Упор на свежую рыбу, крабов, устрицы и знаменитые магаданские креветки.</p>
+            <div class="card-highlight">🔥 Особенность: Прохладный бриз у воды и морепродукты.</div>
+        </div>
+
+        <div class="restaurant-item" id="item-4" onclick="setVenue(4, 'Марика')">
+            <div class="checkmark-icon"></div>
+            <div class="card-top">
+                <span class="card-name">Марика</span>
+                <span class="card-label">РЕСТОРАН</span>
+            </div>
+            <div class="badge-row">
+                <span class="mini-badge main-tag">Грузинская & Азия</span>
+                <span class="mini-badge">Уютная терраса</span>
+            </div>
+            <p class="card-info">Очень душевный микс кавказской сытной еды и паназиатских трендов. Идеальные сочные хачапури и роллы.</p>
+            <div class="card-highlight">🔥 Особенность: Комфортный вайб и супер-разнообразное меню.</div>
+        </div>
+
+        <div class="restaurant-item" id="item-5" onclick="setVenue(5, 'Ava Daily')">
+            <div class="checkmark-icon"></div>
+            <div class="card-top">
+                <span class="card-name">Ava Daily</span>
+                <span class="card-label">КАФЕ-БИСТРО</span>
+            </div>
+            <div class="badge-row">
+                <span class="mini-badge main-tag">Авторская</span>
+                <span class="mini-badge">Смузи & Десерты</span>
+            </div>
+            <p class="card-info">Концептуальное и легкое городское бистро на набережной. Лучшие десерты, выпечка и классные легкие сэндвичи.</p>
+            <div class="card-highlight">🔥 Особенность: Непринужденная атмосфера без лишнего пафоса.</div>
+        </div>
+
+        <div class="restaurant-item" id="item-6" onclick="setVenue(6, 'FeiFan')">
+            <div class="checkmark-icon"></div>
+            <div class="card-top">
+                <span class="card-name">FeiFan</span>
+                <span class="card-label">HOTPOT & BBQ</span>
+            </div>
+            <div class="badge-row">
+                <span class="mini-badge main-tag">Китайская</span>
+                <span class="mini-badge">Интерактивный ужин</span>
+            </div>
+            <p class="card-info">Экзотический формат Хого, где ингредиенты можно варить самостоятельно в бульоне прямо в центре стола.</p>
+            <div class="card-highlight">🔥 Особенность: Необычный, вовлекающий и веселый процесс.</div>
+        </div>
+
     </div>
-    <div class="note">
-      <div class="note-ico">🍓</div>
-      <div class="note-body">
-        <div class="note-title">Покушай клубники</div>
-        <div class="note-text">это витамины тем более у тебя ее много</div>
-      </div>
+
+    <div class="footer-action">
+        <a href="#" id="submit-action" class="launch-link" target="_blank" onclick="verifySelections(event)">Подтвердить в Telegram</a>
     </div>
-  </div>
-
-  <!-- Heat card -->
-  <div class="heat-card">
-    <div class="heat-ico">🌡️</div>
-    <div class="heat-text">
-      <div class="heat-title">Пусть жара сегодня пощадит</div>
-      <div class="heat-desc">Держись, найди тень, прохладу и что-нибудь вкусное</div>
-    </div>
-  </div>
-
-  <div class="div b"><div class="div-l"></div><div class="div-d">✦</div><div class="div-l"></div></div>
-
-  <!-- Coffee -->
-  <div class="coffee-wrap">
-    <div class="coffee-scene">
-      <div class="steam-wrap">
-        <div class="steam" style="--sd:0s"></div>
-        <div class="steam" style="--sd:.45s"></div>
-        <div class="steam" style="--sd:.9s"></div>
-      </div>
-      <div class="coffee-cup">☕</div>
-    </div>
-  </div>
-
-  <!-- Main message -->
-  <div class="msg-card">
-    <div class="msg-quote">
-      Пусть день будет <em>лёгким</em>,<br>
-      жара терпимой,<br>
-      и всё пойдёт как надо ☀️
-    </div>
-    <div class="msg-sign">Доброе утро, Маша ✦</div>
-  </div>
-
-  <div class="div c"><div class="div-l"></div><div class="div-d">✦</div><div class="div-l"></div></div>
-
-  <div class="footer">
-    <p>с заботой о тебе и Лудике</p>
-  </div>
-
 </div>
 
 <script>
-const fl = document.getElementById('fl');
-const colors = ['#e8a882','#f0c9a0','#c97a5a','#f5c030','#ecc9a8'];
-for(let i=0;i<22;i++){
-  const d=document.createElement('div'); d.className='dot';
-  const sz=2.5+Math.random()*4.5;
-  d.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${sz}px;height:${sz}px;background:${colors[Math.floor(Math.random()*colors.length)]}`;
-  d.style.setProperty('--d',(5+Math.random()*8).toFixed(1)+'s');
-  d.style.setProperty('--dl',(Math.random()*9).toFixed(1)+'s');
-  d.style.setProperty('--op',(0.12+Math.random()*.28).toFixed(2));
-  d.style.setProperty('--ty',(-(18+Math.random()*38)).toFixed(0)+'px');
-  fl.appendChild(d);
-}
-const syms=['✦','☀','✿','❋','◌'];
-for(let i=0;i<7;i++){
-  const s=document.createElement('div'); s.className='sym';
-  s.textContent=syms[Math.floor(Math.random()*syms.length)];
-  s.style.left=Math.random()*100+'%';
-  s.style.top=(20+Math.random()*60)+'%';
-  s.style.color=colors[Math.floor(Math.random()*colors.length)];
-  s.style.setProperty('--sz',(9+Math.random()*8).toFixed(0)+'px');
-  s.style.setProperty('--d',(10+Math.random()*12).toFixed(1)+'s');
-  s.style.setProperty('--dl',(Math.random()*12).toFixed(1)+'s');
-  s.style.setProperty('--op',(0.15+Math.random()*.3).toFixed(2));
-  s.style.setProperty('--ty',(-(60+Math.random()*80)).toFixed(0)+'px');
-  s.style.setProperty('--rot',(Math.random()>.5?1:-1)*(15+Math.random()*35)+'deg');
-  fl.appendChild(s);
-}
+    let currentSelectedTime = null;
+    let currentSelectedVenue = null;
+
+    function setTime(timeValue) {
+        currentSelectedTime = timeValue;
+        const timeButtons = document.querySelectorAll('.grid-layout .option-button');
+        timeButtons.forEach(button => button.classList.remove('active-state'));
+        
+        event.target.classList.add('active-state');
+        refreshInterface();
+    }
+
+    function setVenue(cardId, venueName) {
+        currentSelectedVenue = venueName;
+        const restaurantCards = document.querySelectorAll('.cards-stack .restaurant-item');
+        restaurantCards.forEach(card => card.classList.remove('active-state'));
+        
+        document.getElementById(`item-${cardId}`).classList.add('active-state');
+        refreshInterface();
+    }
+
+    function refreshInterface() {
+        const actionButton = document.getElementById('submit-action');
+        if (currentSelectedTime && currentSelectedVenue) {
+            actionButton.classList.add('ready-to-send');
+            
+            const messageText = `Привет! Выбрала время: ${currentSelectedTime}, локация: ${currentSelectedVenue}. До встречи в воскресенье!`;
+            actionButton.href = `https://t.me/juwede12?text=${encodeURIComponent(messageText)}`;
+        }
+    }
+
+    function verifySelections(e) {
+        if (!currentSelectedTime || !currentSelectedVenue) {
+            e.preventDefault();
+        }
+    }
 </script>
+
 </body>
 </html>
