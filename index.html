@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Планы на Лужники</title>
+    <title>Планы на выходные</title>
     <style>
         :root {
             --bg-gradient: linear-gradient(135deg, #08080a 0%, #121217 100%);
@@ -49,22 +49,22 @@
         .emoji-particle {
             position: absolute;
             bottom: -50px;
-            font-size: 24px;
-            animation: flyUp 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            font-size: 28px;
+            animation: flyUp 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
             opacity: 0;
         }
 
         @keyframes flyUp {
             0% {
-                transform: translateY(0) translateX(0) scale(0.5) rotate(0deg);
+                transform: translateY(0) translateX(0) scale(0.3) rotate(0deg);
                 opacity: 0;
             }
-            10% {
+            15% {
                 opacity: 1;
-                transform: translateY(-10vh) translateX(var(--x-side)) scale(1.2) rotate(45deg);
+                transform: translateY(-15vh) translateX(var(--x-side)) scale(1.2) rotate(30deg);
             }
             100% {
-                transform: translateY(-105vh) translateX(calc(var(--x-side) * 2)) scale(0.8) rotate(var(--rot));
+                transform: translateY(-105vh) translateX(calc(var(--x-side) * 1.8)) scale(0.7) rotate(var(--rot));
                 opacity: 0;
             }
         }
@@ -113,6 +113,14 @@
             margin-bottom: 16px;
             letter-spacing: 1px;
             text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .date-tag.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         h1 {
@@ -138,7 +146,7 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             color: rgba(255, 255, 255, 0.3);
-            margin: 35px 0 16px 0;
+            margin: 32px 0 16px 0;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -158,6 +166,13 @@
             margin-bottom: 10px;
         }
 
+        .grid-layout-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
         .option-button {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.04);
@@ -167,9 +182,11 @@
             font-size: 14px;
             font-weight: 700;
             color: var(--text-primary);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
             text-align: center;
             outline: none;
+            position: relative;
+            overflow: hidden;
         }
 
         .option-button:hover {
@@ -178,12 +195,33 @@
             transform: translateY(-1px);
         }
 
+        .option-button:active {
+            transform: translateY(1px);
+        }
+
         .option-button.active-state {
             background: var(--accent-gradient);
             border-color: var(--accent-glow);
             color: #000000;
             box-shadow: 0 8px 24px rgba(222, 255, 154, 0.25);
             transform: translateY(-1px);
+        }
+
+        /* Особый стиль для кнопок дат */
+        .date-btn-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .date-sub {
+            font-size: 11px;
+            opacity: 0.6;
+            font-weight: 500;
+        }
+        .active-state .date-sub {
+            opacity: 0.8;
         }
 
         .cards-stack {
@@ -371,24 +409,40 @@
 <div class="main-container">
     <header>
         <div class="glow-orb"></div>
-        <div class="date-tag">Воскресенье • 24 мая</div>
+        <div id="top-date-tag" class="date-tag">Выбрано</div>
         <h1>Планы на Лужники</h1>
-        <p class="lead-text">Выбери время и место, куда заглянем</p>
+        <p class="lead-text">Выбери день, время и место, куда заглянем на выходных</p>
     </header>
 
-    <div class="step-title">1. Время встречи</div>
-    <div class="grid-layout">
-        <button class="option-button" onclick="setTime('15:30')">15:30</button>
-        <button class="option-button" onclick="setTime('17:00')">17:00</button>
-        <button class="option-button" onclick="setTime('18:30')">18:30</button>
-    </div>
-    <div class="grid-layout" style="margin-top: 8px;">
-        <button class="option-button" onclick="setTime('19:30')">19:30</button>
-        <button class="option-button" onclick="setTime('20:30')">20:30</button>
-        <button class="option-button" onclick="setTime('Обсудим')">Другое</button>
+    <div class="step-title">1. Выбор даты</div>
+    <div class="grid-layout-2">
+        <button class="option-button" onclick="setDate(event, '6 июня (сб)')">
+            <div class="date-btn-content">
+                <span>6 июня</span>
+                <span class="date-sub">суббота</span>
+            </div>
+        </button>
+        <button class="option-button" onclick="setDate(event, '7 июня (вс)')">
+            <div class="date-btn-content">
+                <span>7 июня</span>
+                <span class="date-sub">воскресенье</span>
+            </div>
+        </button>
     </div>
 
-    <div class="step-title">2. Атмосфера и локация</div>
+    <div class="step-title">2. Время встречи</div>
+    <div class="grid-layout">
+        <button class="option-button time-btn" onclick="setTime(event, '15:30')">15:30</button>
+        <button class="option-button time-btn" onclick="setTime(event, '17:00')">17:00</button>
+        <button class="option-button time-btn" onclick="setTime(event, '18:30')">18:30</button>
+    </div>
+    <div class="grid-layout" style="margin-top: 8px;">
+        <button class="option-button time-btn" onclick="setTime(event, '19:30')">19:30</button>
+        <button class="option-button time-btn" onclick="setTime(event, '20:30')">20:30</button>
+        <button class="option-button time-btn" onclick="setTime(event, 'Обсудим')">Другое</button>
+    </div>
+
+    <div class="step-title">3. Атмосфера и локация</div>
     <div class="cards-stack">
         
         <div class="restaurant-item" id="item-1" onclick="setVenue(1, 'Loona')">
@@ -484,34 +538,53 @@
 </div>
 
 <script>
+    let currentSelectedDate = null;
     let currentSelectedTime = null;
     let currentSelectedVenue = null;
-    const emojis = ['🥂', '✨', '🍕', '🍣', '💃', '🍓', '🔥', '🥂', '✨'];
+    const emojis = ['🥂', '✨', '🍕', '🍣', '💃', '🍓', '🔥', '🥂', '✨', '🌸'];
 
     function spawnEmojis() {
         const container = document.getElementById('emoji-container');
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 22; i++) {
             setTimeout(() => {
                 const emoji = document.createElement('div');
                 emoji.classList.add('emoji-particle');
                 emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
                 
-                // Рандомная траектория
                 emoji.style.left = Math.random() * 80 + 10 + '%';
-                emoji.style.setProperty('--x-side', (Math.random() * 200 - 100) + 'px');
+                emoji.style.setProperty('--x-side', (Math.random() * 180 - 90) + 'px');
                 emoji.style.setProperty('--rot', (Math.random() * 360 - 180) + 'deg');
                 
                 container.appendChild(emoji);
-                
-                // Удаление элемента после окончания анимации
-                setTimeout(() => emoji.remove(), 2500);
-            }, i * 60);
+                setTimeout(() => emoji.remove(), 2200);
+            }, i * 50);
         }
     }
 
-    function setTime(timeValue) {
+    function setDate(event, dateValue) {
+        currentSelectedDate = dateValue;
+        
+        // Очищаем активный класс у кнопок даты в этом контейнере
+        const container = event.target.closest('.grid-layout-2');
+        const buttons = container.querySelectorAll('.option-button');
+        buttons.forEach(btn => btn.classList.remove('active-state'));
+        
+        // Добавляем класс нажатой кнопке (или ее родителю, если кликнули по тексту внури)
+        const targetBtn = event.target.classList.contains('option-button') ? event.target : event.target.closest('.option-button');
+        targetBtn.classList.add('active-state');
+        
+        // Показываем верхний тег
+        const topTag = document.getElementById('top-date-tag');
+        topTag.innerText = dateValue;
+        topTag.classList.add('visible');
+        
+        triggerEffects();
+    }
+
+    function setTime(event, timeValue) {
         currentSelectedTime = timeValue;
-        const timeButtons = document.querySelectorAll('.grid-layout .option-button');
+        
+        const timeButtons = document.querySelectorAll('.time-btn');
         timeButtons.forEach(button => button.classList.remove('active-state'));
         
         event.target.classList.add('active-state');
@@ -529,20 +602,18 @@
 
     function triggerEffects() {
         const actionButton = document.getElementById('submit-action');
-        if (currentSelectedTime && currentSelectedVenue) {
+        if (currentSelectedDate && currentSelectedTime && currentSelectedVenue) {
             actionButton.classList.add('ready-to-send');
             
-            // Форматирование без лишних слов
-            const messageText = `Я выбрала\nВремя: ${currentSelectedTime}\nМесто: ${currentSelectedVenue}`;
+            const messageText = `Я выбрала\nДата: ${currentSelectedDate}\nВремя: ${currentSelectedTime}\nМесто: ${currentSelectedVenue}`;
             actionButton.href = `https://t.me/juwede12?text=${encodeURIComponent(messageText)}`;
             
-            // Салют из эмодзи при каждом финальном выборе
             spawnEmojis();
         }
     }
 
     function verifySelections(e) {
-        if (!currentSelectedTime || !currentSelectedVenue) {
+        if (!currentSelectedDate || !currentSelectedTime || !currentSelectedVenue) {
             e.preventDefault();
         }
     }
