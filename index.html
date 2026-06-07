@@ -2,621 +2,213 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Планы на выходные</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Главное — поправляйся 🤍</title>
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #08080a 0%, #121217 100%);
-            --card-bg: rgba(26, 26, 36, 0.6);
-            --card-border: rgba(255, 255, 255, 0.05);
-            --text-primary: #ffffff;
-            --text-secondary: #9aa0b0;
-            --accent-glow: #deff9a;
-            --accent-gradient: linear-gradient(90deg, #deff9a 0%, #a8ffb2 100%);
-            --radius-lg: 24px;
-            --radius-md: 14px;
+            /* Уютная, теплая палитра: чай, плед и домашний уют */
+            --bg-gradient: linear-gradient(135deg, #fdfbf7 0%, #f5f7f6 100%);
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --card-border: rgba(234, 218, 202, 0.5);
+            
+            --text-main: #2e3834;
+            --text-muted: #667a71;
+            
+            --accent-warm: #dfa872;
+            --submit-gradient: linear-gradient(135deg, #eacfbc 0%, #badaeb 100%);
+            
+            --radius-lg: 26px;
+            --radius-md: 16px;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", sans-serif;
             -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background: var(--bg-gradient);
-            color: var(--text-secondary);
-            padding: 40px 16px;
+            color: var(--text-main);
             min-height: 100vh;
-            display: block;
-            overflow-x: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 16px;
             position: relative;
+            overflow-x: hidden;
         }
 
-        /* Контейнер для летающих эмодзи */
-        #emoji-container {
+        /* Медленные теплые огоньки и уютные элементы на фоне */
+        #cozy-flow {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 9999;
+            z-index: 1;
+            overflow: hidden;
+            opacity: 0.6;
         }
 
-        .emoji-particle {
+        .bg-particle {
             position: absolute;
             bottom: -50px;
-            font-size: 28px;
-            animation: flyUp 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-            opacity: 0;
+            font-size: 22px;
+            animation: cozyFloat var(--duration) linear infinite;
+            user-select: none;
         }
 
-        @keyframes flyUp {
-            0% {
-                transform: translateY(0) translateX(0) scale(0.3) rotate(0deg);
-                opacity: 0;
-            }
-            15% {
-                opacity: 1;
-                transform: translateY(-15vh) translateX(var(--x-side)) scale(1.2) rotate(30deg);
-            }
-            100% {
-                transform: translateY(-105vh) translateX(calc(var(--x-side) * 1.8)) scale(0.7) rotate(var(--rot));
-                opacity: 0;
-            }
+        @keyframes cozyFloat {
+            0% { transform: translateY(0) translateX(0) rotate(0deg) scale(0.9); opacity: 0; }
+            15% { opacity: 0.8; }
+            85% { opacity: 0.8; }
+            100% { transform: translateY(-115vh) translateX(var(--drift)) rotate(var(--rot)) scale(1.1); opacity: 0; }
         }
 
-        .main-container {
-            max-width: 460px;
-            margin: 0 auto;
+        .wrapper {
+            width: 100%;
+            max-width: 390px;
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            padding: 40px 24px;
-            border-radius: var(--radius-lg);
             border: 1px solid var(--card-border);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-lg);
+            padding: 36px 24px;
+            box-shadow: 0 20px 45px rgba(223, 168, 114, 0.12), inset 0 1px 0 rgba(255,255,255,0.8);
             position: relative;
             z-index: 10;
-        }
-
-        header {
             text-align: center;
-            margin-bottom: 35px;
-            position: relative;
         }
 
-        .glow-orb {
-            position: absolute;
-            top: -50px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle, rgba(222, 255, 154, 0.15) 0%, transparent 70%);
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .date-tag {
-            display: inline-block;
-            background: rgba(222, 255, 154, 0.08);
-            border: 1px solid rgba(222, 255, 154, 0.2);
-            color: var(--accent-glow);
-            font-size: 11px;
-            font-weight: 700;
-            padding: 6px 16px;
-            border-radius: 30px;
+        .icon-box {
+            font-size: 42px;
             margin-bottom: 16px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            opacity: 0;
-            transform: translateY(-5px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pulse 2s infinite ease-in-out;
         }
 
-        .date-tag.visible {
-            opacity: 1;
-            transform: translateY(0);
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+            100% { transform: scale(1); }
         }
 
-        h1 {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--text-primary);
+        header h1 {
+            font-size: 24px;
+            font-weight: 700;
             letter-spacing: -0.5px;
-            margin-bottom: 10px;
-            background: linear-gradient(180deg, #ffffff 0%, #b5b5c0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #1c2622;
+            margin-bottom: 20px;
+            line-height: 1.3;
         }
 
-        .lead-text {
-            font-size: 14px;
-            color: #6e7280;
+        .message-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(234, 218, 202, 0.3);
+            border-radius: var(--radius-md);
+            padding: 20px 16px;
+            font-size: 15px;
             line-height: 1.6;
+            color: var(--text-main);
+            text-align: left;
+            margin-bottom: 28px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.01);
         }
 
-        .step-title {
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: rgba(255, 255, 255, 0.3);
-            margin: 32px 0 16px 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .step-title::after {
-            content: '';
-            flex-grow: 1;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .grid-layout {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .grid-layout-2 {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-
-        .option-button {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 16px 0;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text-primary);
-            transition: all 0.2s ease;
-            text-align: center;
-            outline: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .option-button:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateY(-1px);
-        }
-
-        .option-button:active {
-            transform: translateY(1px);
-        }
-
-        .option-button.active-state {
-            background: var(--accent-gradient);
-            border-color: var(--accent-glow);
-            color: #000000;
-            box-shadow: 0 8px 24px rgba(222, 255, 154, 0.25);
-            transform: translateY(-1px);
-        }
-
-        /* Особый стиль для кнопок дат */
-        .date-btn-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .date-sub {
-            font-size: 11px;
-            opacity: 0.6;
-            font-weight: 500;
-        }
-        .active-state .date-sub {
-            opacity: 0.8;
-        }
-
-        .cards-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .restaurant-item {
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: var(--radius-md);
-            padding: 22px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: rgba(255, 255, 255, 0.01);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .restaurant-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(222, 255, 154, 0.03) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .restaurant-item:hover {
-            border-color: rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.02);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .restaurant-item.active-state {
-            border-color: rgba(222, 255, 154, 0.4);
-            background: rgba(222, 255, 154, 0.02);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(222, 255, 154, 0.06);
-        }
-
-        .restaurant-item.active-state::before {
-            opacity: 1;
-        }
-
-        .card-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .message-card p {
             margin-bottom: 12px;
         }
 
-        .card-name {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.3px;
+        .message-card p:last-child {
+            margin-bottom: 0;
         }
 
-        .card-label {
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: #52525b;
-            letter-spacing: 1px;
-            background: rgba(255, 255, 255, 0.04);
-            padding: 4px 10px;
-            border-radius: 20px;
+        .highlight {
+            font-weight: 600;
+            color: #bd7a3a;
         }
 
-        .badge-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 14px;
+        .action-container {
+            margin-top: 10px;
         }
 
-        .mini-badge {
-            font-size: 11px;
-            background: rgba(255, 255, 255, 0.03);
-            color: #a1a1aa;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-weight: 500;
-            border: 1px solid rgba(255, 255, 255, 0.02);
-        }
-
-        .mini-badge.main-tag {
-            background: rgba(222, 255, 154, 0.06);
-            color: var(--accent-glow);
-            border-color: rgba(222, 255, 154, 0.1);
-        }
-
-        .card-info {
-            font-size: 13.5px;
-            color: var(--text-secondary);
-            line-height: 1.55;
-            margin-bottom: 12px;
-        }
-
-        .card-highlight {
-            font-size: 12.5px;
-            color: var(--accent-glow);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 500;
-        }
-
-        .checkmark-icon {
-            position: absolute;
-            top: 22px;
-            right: 22px;
-            width: 18px;
-            height: 18px;
-            background: var(--accent-gradient);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transform: scale(0.6);
-            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .checkmark-icon::after {
-            content: '';
-            width: 4px;
-            height: 8px;
-            border: solid #000;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-            margin-top: -2px;
-        }
-
-        .restaurant-item.active-state .checkmark-icon {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .footer-action {
-            margin-top: 35px;
-        }
-
-        .launch-link {
+        .tg-btn {
             display: block;
             width: 100%;
-            background: #202024;
-            color: #4b4b54;
+            background: var(--submit-gradient);
+            color: #2e3834;
             text-align: center;
             padding: 18px;
             border-radius: var(--radius-md);
             text-decoration: none;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 700;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            pointer-events: none;
-            cursor: not-allowed;
+            box-shadow: 0 10px 25px rgba(234, 207, 188, 0.5);
+            transition: all 0.25s ease;
         }
 
-        .launch-link.ready-to-send {
-            background: var(--accent-gradient);
-            color: #000000;
-            box-shadow: 0 10px 30px rgba(222, 255, 154, 0.2);
-            pointer-events: auto;
-            cursor: pointer;
-            border: none;
-        }
-
-        .launch-link.ready-to-send:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 35px rgba(222, 255, 154, 0.3);
+        .tg-btn:active {
+            transform: scale(0.97);
+            box-shadow: 0 5px 12px rgba(234, 207, 188, 0.3);
         }
     </style>
 </head>
-<body>
+<body ontouchstart="">
 
-<div id="emoji-container"></div>
+<div id="cozy-flow"></div>
 
-<div class="main-container">
+<div class="wrapper">
+    <div class="icon-box">☕</div>
     <header>
-        <div class="glow-orb"></div>
-        <div id="top-date-tag" class="date-tag">Выбрано</div>
-        <h1>Планы на Лужники</h1>
-        <p class="lead-text">Выбери день, время и место, куда заглянем на выходных</p>
+        <h1>Главное — поправляйся</h1>
     </header>
 
-    <div class="step-title">1. Выбор даты</div>
-    <div class="grid-layout-2">
-        <button class="option-button" onclick="setDate(event, '6 июня (сб)')">
-            <div class="date-btn-content">
-                <span>6 июня</span>
-                <span class="date-sub">суббота</span>
-            </div>
-        </button>
-        <button class="option-button" onclick="setDate(event, '7 июня (вс)')">
-            <div class="date-btn-content">
-                <span>7 июня</span>
-                <span class="date-sub">воскресенье</span>
-            </div>
-        </button>
+    <div class="message-card">
+        <p>Пупс, вообще не переживай из-за переноса, здоровье сейчас гораздо важнее. Счёт 1:1, так что всё честно) Отдыхай спокойно.</p>
+        <p class="highlight">Я тоже перенесу, всё ок, я придумаю что-нибудь интересное к следующим выходным.</p>
+        <p>Сейчас просто завернись в плед, пей побольше теплого чая и ни о чем не думай 🤍</p>
     </div>
 
-    <div class="step-title">2. Время встречи</div>
-    <div class="grid-layout">
-        <button class="option-button time-btn" onclick="setTime(event, '15:30')">15:30</button>
-        <button class="option-button time-btn" onclick="setTime(event, '17:00')">17:00</button>
-        <button class="option-button time-btn" onclick="setTime(event, '18:30')">18:30</button>
-    </div>
-    <div class="grid-layout" style="margin-top: 8px;">
-        <button class="option-button time-btn" onclick="setTime(event, '19:30')">19:30</button>
-        <button class="option-button time-btn" onclick="setTime(event, '20:30')">20:30</button>
-        <button class="option-button time-btn" onclick="setTime(event, 'Обсудим')">Другое</button>
-    </div>
-
-    <div class="step-title">3. Атмосфера и локация</div>
-    <div class="cards-stack">
-        
-        <div class="restaurant-item" id="item-1" onclick="setVenue(1, 'Loona')">
-            <div class="checkmark-icon"></div>
-            <div class="card-top">
-                <span class="card-name">Loona</span>
-                <span class="card-label">РЕСТОРАН</span>
-            </div>
-            <div class="badge-row">
-                <span class="mini-badge main-tag">Итальянская</span>
-                <span class="mini-badge">Панорамные окна</span>
-                <span class="mini-badge">Вайбово</span>
-            </div>
-            <p class="card-info">Очень красивый флагманский проект. Обилие живой зелени, дровяная печь, роскошный интерьер и топовая домашняя паста.</p>
-            <div class="card-highlight">🔥 Особенность: Стильный, легкий и эстетичный вечер.</div>
-        </div>
-
-        <div class="restaurant-item" id="item-2" onclick="setVenue(2, 'The Villa')">
-            <div class="checkmark-icon"></div>
-            <div class="card-top">
-                <span class="card-name">The Villa</span>
-                <span class="card-label">РЕСТОРАН</span>
-            </div>
-            <div class="badge-row">
-                <span class="mini-badge main-tag">Европейская & Гриль</span>
-                <span class="mini-badge">Загородная усадьба</span>
-            </div>
-            <p class="card-info">Шикарный двухэтажный особняк. Создает ощущение отдыха на дорогой загородной вилле. Мясо на гриле, стейки и паста.</p>
-            <div class="card-highlight">🔥 Особенность: Спокойная, уединенная и статусная обстановка.</div>
-        </div>
-
-        <div class="restaurant-item" id="item-3" onclick="setVenue(3, 'Магадан')">
-            <div class="checkmark-icon"></div>
-            <div class="card-top">
-                <span class="card-name">Магадан</span>
-                <span class="card-label">РЕСТОРАН</span>
-            </div>
-            <div class="badge-row">
-                <span class="mini-badge main-tag">Морепродукты</span>
-                <span class="mini-badge">Огромная веранда</span>
-            </div>
-            <p class="card-info">Легендарный проект прямо на набережной. Упор на свежую рыбу, крабов, устрицы и знаменитые магаданские креветки.</p>
-            <div class="card-highlight">🔥 Особенность: Прохладный бриз у воды и морепродукты.</div>
-        </div>
-
-        <div class="restaurant-item" id="item-4" onclick="setVenue(4, 'Марика')">
-            <div class="checkmark-icon"></div>
-            <div class="card-top">
-                <span class="card-name">Марика</span>
-                <span class="card-label">РЕСТОРАН</span>
-            </div>
-            <div class="badge-row">
-                <span class="mini-badge main-tag">Грузинская & Азия</span>
-                <span class="mini-badge">Уютная терраса</span>
-            </div>
-            <p class="card-info">Очень душевный микс кавказской сытной еды и паназиатских трендов. Идеальные сочные хачапури и роллы.</p>
-            <div class="card-highlight">🔥 Особенность: Комфортный вайб и супер-разнообразное меню.</div>
-        </div>
-
-        <div class="restaurant-item" id="item-5" onclick="setVenue(5, 'Ava Daily')">
-            <div class="checkmark-icon"></div>
-            <div class="card-top">
-                <span class="card-name">Ava Daily</span>
-                <span class="card-label">КАФЕ-БИСТРО</span>
-            </div>
-            <div class="badge-row">
-                <span class="mini-badge main-tag">Авторская</span>
-                <span class="mini-badge">Смузи & Десерты</span>
-            </div>
-            <p class="card-info">Концептуальное и легкое городское бистро на набережной. Лучшие десерты, выпечка и классные легкие сэндвичи.</p>
-            <div class="card-highlight">🔥 Особенность: Непринужденная атмосфера без лишнего пафоса.</div>
-        </div>
-
-        <div class="restaurant-item" id="item-6" onclick="setVenue(6, 'FeiFan')">
-            <div class="checkmark-icon"></div>
-            <div class="card-top">
-                <span class="card-name">FeiFan</span>
-                <span class="card-label">HOTPOT & BBQ</span>
-            </div>
-            <div class="badge-row">
-                <span class="mini-badge main-tag">Китайская</span>
-                <span class="mini-badge">Интерактивный ужин</span>
-            </div>
-            <p class="card-info">Экзотический формат Хого, где ингредиенты можно варить самостоятельно в бульоне прямо в центре стола.</p>
-            <div class="card-highlight">🔥 Особенность: Необычный, вовлекающий и веселый процесс.</div>
-        </div>
-
-    </div>
-
-    <div class="footer-action">
-        <a href="#" id="submit-action" class="launch-link" target="_blank" onclick="verifySelections(event)">Подтвердить в Telegram</a>
+    <div class="action-container">
+        <a href="https://t.me/juwede12" id="reply-link" class="tg-btn">Сказать, что ушла пить чай ✨</a>
     </div>
 </div>
 
 <script>
-    let currentSelectedDate = null;
-    let currentSelectedTime = null;
-    let currentSelectedVenue = null;
-    const emojis = ['🥂', '✨', '🍕', '🍣', '💃', '🍓', '🔥', '🥂', '✨', '🌸'];
+    // Теплые, ненавязчивые элементы для фона
+    const cozyElements = ['✨', '🍵', '🍃', '✨', '☁️'];
 
-    function spawnEmojis() {
-        const container = document.getElementById('emoji-container');
-        for (let i = 0; i < 22; i++) {
-            setTimeout(() => {
-                const emoji = document.createElement('div');
-                emoji.classList.add('emoji-particle');
-                emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-                
-                emoji.style.left = Math.random() * 80 + 10 + '%';
-                emoji.style.setProperty('--x-side', (Math.random() * 180 - 90) + 'px');
-                emoji.style.setProperty('--rot', (Math.random() * 360 - 180) + 'deg');
-                
-                container.appendChild(emoji);
-                setTimeout(() => emoji.remove(), 2200);
-            }, i * 50);
-        }
-    }
-
-    function setDate(event, dateValue) {
-        currentSelectedDate = dateValue;
+    function initBackground() {
+        const container = document.getElementById('cozy-flow');
+        if (!container) return;
         
-        // Очищаем активный класс у кнопок даты в этом контейнере
-        const container = event.target.closest('.grid-layout-2');
-        const buttons = container.querySelectorAll('.option-button');
-        buttons.forEach(btn => btn.classList.remove('active-state'));
-        
-        // Добавляем класс нажатой кнопке (или ее родителю, если кликнули по тексту внури)
-        const targetBtn = event.target.classList.contains('option-button') ? event.target : event.target.closest('.option-button');
-        targetBtn.classList.add('active-state');
-        
-        // Показываем верхний тег
-        const topTag = document.getElementById('top-date-tag');
-        topTag.innerText = dateValue;
-        topTag.classList.add('visible');
-        
-        triggerEffects();
-    }
-
-    function setTime(event, timeValue) {
-        currentSelectedTime = timeValue;
-        
-        const timeButtons = document.querySelectorAll('.time-btn');
-        timeButtons.forEach(button => button.classList.remove('active-state'));
-        
-        event.target.classList.add('active-state');
-        triggerEffects();
-    }
-
-    function setVenue(cardId, venueName) {
-        currentSelectedVenue = venueName;
-        const restaurantCards = document.querySelectorAll('.cards-stack .restaurant-item');
-        restaurantCards.forEach(card => card.classList.remove('active-state'));
-        
-        document.getElementById(`item-${cardId}`).classList.add('active-state');
-        triggerEffects();
-    }
-
-    function triggerEffects() {
-        const actionButton = document.getElementById('submit-action');
-        if (currentSelectedDate && currentSelectedTime && currentSelectedVenue) {
-            actionButton.classList.add('ready-to-send');
+        // Создаем 14 медленно летящих частиц
+        for (let i = 0; i < 14; i++) {
+            const element = document.createElement('div');
+            element.classList.add('bg-particle');
+            element.innerText = cozyElements[Math.floor(Math.random() * cozyElements.length)];
             
-            const messageText = `Я выбрала\nДата: ${currentSelectedDate}\nВремя: ${currentSelectedTime}\nМесто: ${currentSelectedVenue}`;
-            actionButton.href = `https://t.me/juwede12?text=${encodeURIComponent(messageText)}`;
+            element.style.left = Math.random() * 92 + 4 + '%';
+            element.style.setProperty('--duration', (Math.random() * 6 + 12) + 's'); // Очень плавный полет
+            element.style.setProperty('--drift', (Math.random() * 100 - 50) + 'px');
+            element.style.setProperty('--rot', (Math.random() * 360 - 180) + 'deg');
+            element.style.animationDelay = (Math.random() * -12) + 's';
             
-            spawnEmojis();
+            container.appendChild(element);
         }
     }
 
-    function verifySelections(e) {
-        if (!currentSelectedDate || !currentSelectedTime || !currentSelectedVenue) {
-            e.preventDefault();
-        }
-    }
+    // Автоматически подставляем текст для быстрого ответа в ТГ, если захочет тапнуть
+    window.addEventListener('DOMContentLoaded', () => {
+        initBackground();
+        const link = document.getElementById('reply-link');
+        const txt = "Ушла пить чай и поправляться ☕ Спасибо за поддержку!";
+        link.href = `https://t.me/juwede12?text=${encodeURIComponent(txt)}`;
+    });
 </script>
 
 </body>
