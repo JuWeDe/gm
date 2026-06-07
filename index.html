@@ -6,7 +6,7 @@
     <title>Главное — поправляйся 🤍</title>
     <style>
         :root {
-            /* Уютная, теплая палитра: чай, плед и домашний уют */
+            /* Уютная палитра: прохлада, чай и домашний комфорт */
             --bg-gradient: linear-gradient(135deg, #fdfbf7 0%, #f5f7f6 100%);
             --card-bg: rgba(255, 255, 255, 0.92);
             --card-border: rgba(234, 218, 202, 0.5);
@@ -14,9 +14,7 @@
             --text-main: #2e3834;
             --text-muted: #667a71;
             
-            --accent-warm: #dfa872;
             --submit-gradient: linear-gradient(135deg, #eacfbc 0%, #badaeb 100%);
-            
             --radius-lg: 26px;
             --radius-md: 16px;
         }
@@ -42,7 +40,7 @@
             overflow-x: hidden;
         }
 
-        /* Медленные теплые огоньки и уютные элементы на фоне */
+        /* Медленные прохладные и уютные частицы на фоне */
         #cozy-flow {
             position: fixed;
             top: 0;
@@ -64,10 +62,10 @@
         }
 
         @keyframes cozyFloat {
-            0% { transform: translateY(0) translateX(0) rotate(0deg) scale(0.9); opacity: 0; }
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
             15% { opacity: 0.8; }
             85% { opacity: 0.8; }
-            100% { transform: translateY(-115vh) translateX(var(--drift)) rotate(var(--rot)) scale(1.1); opacity: 0; }
+            100% { transform: translateY(-115vh) translateX(var(--drift)) rotate(var(--rot)); opacity: 0; }
         }
 
         .wrapper {
@@ -116,7 +114,6 @@
             color: var(--text-main);
             text-align: left;
             margin-bottom: 28px;
-            box-shadow: inset 0 1px 2px rgba(0,0,0,0.01);
         }
 
         .message-card p {
@@ -162,38 +159,37 @@
 <div id="cozy-flow"></div>
 
 <div class="wrapper">
-    <div class="icon-box">☕</div>
+    <div class="icon-box">🍃</div>
     <header>
         <h1>Главное — поправляйся</h1>
     </header>
 
     <div class="message-card">
         <p>Пупс, вообще не переживай из-за переноса, здоровье сейчас гораздо важнее. Счёт 1:1, так что всё честно) Отдыхай спокойно.</p>
+        <p>Эта дурацкая жара кого угодно отключит, так что неудивительно, что голова разболелась. Хорошо, что ты в душ пошла, должно стать полегче.</p>
         <p class="highlight">Я тоже перенесу, всё ок, я придумаю что-нибудь интересное к следующим выходным.</p>
-        <p>Сейчас просто завернись в плед, пей побольше теплого чая и ни о чем не думай 🤍</p>
+        <p>Сейчас просто отдыхай, пей прохладную воду или теплый чай и ни о чем не думай 🤍</p>
     </div>
 
     <div class="action-container">
-        <a href="https://t.me/juwede12" id="reply-link" class="tg-btn">Сказать, что ушла пить чай ✨</a>
+        <a href="https://t.me/juwede12" class="tg-btn">Написать тебе ✨</a>
     </div>
 </div>
 
 <script>
-    // Теплые, ненавязчивые элементы для фона
     const cozyElements = ['✨', '🍵', '🍃', '✨', '☁️'];
 
     function initBackground() {
         const container = document.getElementById('cozy-flow');
         if (!container) return;
         
-        // Создаем 14 медленно летящих частиц
         for (let i = 0; i < 14; i++) {
             const element = document.createElement('div');
             element.classList.add('bg-particle');
             element.innerText = cozyElements[Math.floor(Math.random() * cozyElements.length)];
             
             element.style.left = Math.random() * 92 + 4 + '%';
-            element.style.setProperty('--duration', (Math.random() * 6 + 12) + 's'); // Очень плавный полет
+            element.style.setProperty('--duration', (Math.random() * 6 + 12) + 's');
             element.style.setProperty('--drift', (Math.random() * 100 - 50) + 'px');
             element.style.setProperty('--rot', (Math.random() * 360 - 180) + 'deg');
             element.style.animationDelay = (Math.random() * -12) + 's';
@@ -202,12 +198,8 @@
         }
     }
 
-    // Автоматически подставляем текст для быстрого ответа в ТГ, если захочет тапнуть
     window.addEventListener('DOMContentLoaded', () => {
         initBackground();
-        const link = document.getElementById('reply-link');
-        const txt = "Ушла пить чай и поправляться ☕ Спасибо за поддержку!";
-        link.href = `https://t.me/juwede12?text=${encodeURIComponent(txt)}`;
     });
 </script>
 
