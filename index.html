@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Главное — поправляйся 🤍</title>
+    <title>Планы на выходные 🍿</title>
     <style>
         :root {
-            /* Уютная палитра: прохлада, чай и домашний комфорт */
-            --bg-gradient: linear-gradient(135deg, #fdfbf7 0%, #f5f7f6 100%);
-            --card-bg: rgba(255, 255, 255, 0.92);
-            --card-border: rgba(234, 218, 202, 0.5);
+            /* Прохладная, освежающая и уютная палитра */
+            --bg-gradient: linear-gradient(135deg, #f5f8f7 0%, #faf8f5 100%);
+            --card-bg: rgba(255, 255, 255, 0.93);
+            --card-border: rgba(167, 199, 187, 0.4);
             
-            --text-main: #2e3834;
-            --text-muted: #667a71;
+            --text-main: #2b3632;
+            --text-muted: #5c6e66;
             
-            --submit-gradient: linear-gradient(135deg, #eacfbc 0%, #badaeb 100%);
-            --radius-lg: 26px;
+            --btn-selected-bg: linear-gradient(135deg, #edf6f1 0%, #e0f0e7 100%);
+            --btn-selected-border: #99c2ae;
+            --submit-gradient: linear-gradient(135deg, #aedecd 0%, #ccecd1 100%);
+            
+            --radius-lg: 24px;
             --radius-md: 16px;
         }
 
@@ -35,13 +38,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px 16px;
+            padding: 24px 14px;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* Медленные прохладные и уютные частицы на фоне */
-        #cozy-flow {
+        /* Плавные расслабляющие частицы на фоне */
+        #ambient-flow {
             position: fixed;
             top: 0;
             left: 0;
@@ -50,151 +53,318 @@
             pointer-events: none;
             z-index: 1;
             overflow: hidden;
-            opacity: 0.6;
+            opacity: 0.5;
         }
 
         .bg-particle {
             position: absolute;
             bottom: -50px;
-            font-size: 22px;
+            font-size: 20px;
             animation: cozyFloat var(--duration) linear infinite;
             user-select: none;
         }
 
         @keyframes cozyFloat {
             0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
-            15% { opacity: 0.8; }
-            85% { opacity: 0.8; }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
             100% { transform: translateY(-115vh) translateX(var(--drift)) rotate(var(--rot)); opacity: 0; }
         }
 
         .wrapper {
             width: 100%;
-            max-width: 390px;
+            max-width: 410px;
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--card-border);
             border-radius: var(--radius-lg);
-            padding: 36px 24px;
-            box-shadow: 0 20px 45px rgba(223, 168, 114, 0.12), inset 0 1px 0 rgba(255,255,255,0.8);
+            padding: 32px 20px;
+            box-shadow: 0 20px 45px rgba(167, 199, 187, 0.15);
             position: relative;
             z-index: 10;
+        }
+
+        header {
             text-align: center;
-        }
-
-        .icon-box {
-            font-size: 42px;
-            margin-bottom: 16px;
-            animation: pulse 2s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.06); }
-            100% { transform: scale(1); }
+            margin-bottom: 20px;
         }
 
         header h1 {
             font-size: 24px;
             font-weight: 700;
             letter-spacing: -0.5px;
-            color: #1c2622;
-            margin-bottom: 20px;
-            line-height: 1.3;
+            color: #1a2823;
         }
 
-        .message-card {
+        .intro-text {
             background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(234, 218, 202, 0.3);
+            border: 1px solid rgba(167, 199, 187, 0.3);
             border-radius: var(--radius-md);
-            padding: 20px 16px;
-            font-size: 15px;
-            line-height: 1.6;
+            padding: 16px;
+            font-size: 14px;
+            line-height: 1.5;
             color: var(--text-main);
             text-align: left;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
 
-        .message-card p {
-            margin-bottom: 12px;
+        .section-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #718a7f;
+            margin: 24px 0 12px 4px;
         }
 
-        .message-card p:last-child {
-            margin-bottom: 0;
+        .btn-grid {
+            display: grid;
+            gap: 10px;
         }
+        
+        .grid-3 { grid-template-columns: repeat(3, 1fr); }
+        .grid-2 { grid-template-columns: 1fr 1fr; }
 
-        .highlight {
+        .select-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            padding: 15px 10px;
+            font-size: 14px;
             font-weight: 600;
-            color: #bd7a3a;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+            user-select: none;
+            text-align: center;
         }
 
-        .action-container {
+        .select-btn:active {
+            transform: scale(0.97);
+        }
+
+        .select-btn.selected {
+            background: var(--btn-selected-bg);
+            border-color: var(--btn-selected-border);
+            color: #1a4730;
+            font-weight: 700;
+            box-shadow: 0 6px 15px rgba(153, 194, 174, 0.3);
+        }
+
+        .input-wrapper {
+            display: none;
             margin-top: 10px;
+            animation: slideUp 0.25s ease;
         }
 
-        .tg-btn {
+        .custom-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid var(--btn-selected-border);
+            border-radius: var(--radius-md);
+            padding: 15px;
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .locations-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .location-card {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.01);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .location-card:active {
+            transform: scale(0.98);
+        }
+
+        .location-card.selected {
+            border-color: var(--btn-selected-border);
+            background: rgba(237, 246, 241, 0.8);
+            box-shadow: 0 10px 20px rgba(153, 194, 174, 0.2);
+        }
+
+        .loc-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .location-card.selected .loc-name {
+            color: #1a4730;
+        }
+
+        .loc-desc {
+            font-size: 13px;
+            line-height: 1.45;
+            color: var(--text-muted);
+        }
+
+        .submit-container {
+            margin-top: 32px;
+        }
+
+        .tg-link {
             display: block;
             width: 100%;
-            background: var(--submit-gradient);
-            color: #2e3834;
+            background: #e2e8f0;
+            color: #a0aec0;
             text-align: center;
             padding: 18px;
             border-radius: var(--radius-md);
             text-decoration: none;
             font-size: 16px;
             font-weight: 700;
-            box-shadow: 0 10px 25px rgba(234, 207, 188, 0.5);
-            transition: all 0.25s ease;
+            transition: all 0.3s ease;
+            pointer-events: none;
         }
 
-        .tg-btn:active {
-            transform: scale(0.97);
-            box-shadow: 0 5px 12px rgba(234, 207, 188, 0.3);
+        .tg-link.active {
+            background: var(--submit-gradient);
+            color: #1a2823;
+            pointer-events: auto;
+            box-shadow: 0 10px 25px rgba(174, 222, 205, 0.4);
         }
     </style>
 </head>
-<body ontouchstart="">
+<body>
 
-<div id="cozy-flow"></div>
+<div id="ambient-flow"></div>
 
 <div class="wrapper">
-    <div class="icon-box">🍃</div>
     <header>
-        <h1>Главное — поправляйся</h1>
+        <h1>Планы на выходные 🍿</h1>
     </header>
 
-    <div class="message-card">
-        <p>Пупс, вообще не переживай из-за переноса, здоровье сейчас гораздо важнее. Счёт 1:1, так что всё честно) Отдыхай спокойно.</p>
-        <p>Эта дурацкая жара кого угодно отключит, так что неудивительно, что голова разболелась. Хорошо, что ты в душ пошла, должно стать полегче.</p>
-        <p class="highlight">Я тоже перенесу, всё ок, я придумаю что-нибудь интересное к следующим выходным.</p>
-        <p>Сейчас просто отдыхай, пей прохладную воду или теплый чай и ни о чем не думай 🤍</p>
+    <div class="intro-text">
+        Раз уж с Лужниками сегодня не вышло — вообще не беда, переигрываем. Давай на длинных выходных (12-14 июня) устроим нормальный уютный сбор. Специально выбрал места поближе, чтобы тебе не пришлось тратить силы на долгую дорогу. Выбирай день и формат:
     </div>
 
-    <div class="action-container">
-        <a href="https://t.me/juwede12" class="tg-btn">Написать тебе ✨</a>
+    <div class="section-title">1. Выбери подходящий день</div>
+    <div class="btn-grid grid-3">
+        <button class="select-btn date-btn" onclick="selectDate(this, '12 июня (пятница)')">12 июня</button>
+        <button class="select-btn date-btn" onclick="selectDate(this, '13 июня (суббота)')">13 июня</button>
+        <button class="select-btn date-btn" onclick="selectDate(this, '14 июня (воскресенье)')">14 июня</button>
+    </div>
+    <div class="btn-grid grid-2" style="margin-top: 8px;">
+        <button class="select-btn date-btn" onclick="selectDate(this, 'Решим по ходу дела')">По ходу дела</button>
+        <button class="select-btn date-btn" onclick="selectDate(this, 'custom')">Свой вариант</button>
+    </div>
+    <div id="custom-date-box" class="input-wrapper">
+        <input type="text" id="input-date" class="custom-input" placeholder="Напиши дату или время..." oninput="handleCustomChange()">
+    </div>
+
+    <div class="section-title">2. Локация и формат</div>
+    <div class="locations-stack">
+        <div class="location-card" id="loc-1" onclick="selectVenue(1, 'Чилл у м. Котельники (погулять + зайти в кафе)')">
+            <div class="loc-name">🏡 Максимально локально</div>
+            <div class="loc-desc">Соберемся прямо возле м. Котельники. Спокойно погуляем без лишней суеты и зайдем в уютное кафе поблизости, чтобы тебе было комфортно.</div>
+        </div>
+        <div class="location-card" id="loc-2" onclick="selectVenue(2, 'Движ по фиолетовой ветке в сторону центра')">
+            <div class="loc-name">🚇 Прогулка ближе к центру</div>
+            <div class="loc-desc">Сместимся по фиолетовой ветке чуть ближе к центру (например, Таганка или Кузьминки). Проверенное классное место, приятная атмосфера и вкусная еда.</div>
+        </div>
+        <div class="location-card" id="loc-3" onclick="selectVenue(3, 'custom')">
+            <div class="loc-name">✨ Твое секретное место</div>
+            <div class="loc-desc">Если у тебя есть конкретная идея, кафешка, куда ты давно хотела сходить, или хочется просто посидеть на чилле — пиши сюда.</div>
+        </div>
+    </div>
+    <div id="custom-venue-box" class="input-wrapper">
+        <input type="text" id="input-venue" class="custom-input" placeholder="Куда бы тебе хотелось?..." oninput="handleCustomChange()">
+    </div>
+
+    <div class="submit-container">
+        <a href="#" id="submit-btn" class="tg-link">Отправить ответ 🤍</a>
     </div>
 </div>
 
 <script>
-    const cozyElements = ['✨', '🍵', '🍃', '✨', '☁️'];
+    let pickedDate = null;
+    let pickedVenue = null;
+
+    const items = ['✨', '🍃', '🍿', '🥤', '☁️'];
 
     function initBackground() {
-        const container = document.getElementById('cozy-flow');
+        const container = document.getElementById('ambient-flow');
         if (!container) return;
-        
-        for (let i = 0; i < 14; i++) {
+        for (let i = 0; i < 12; i++) {
             const element = document.createElement('div');
             element.classList.add('bg-particle');
-            element.innerText = cozyElements[Math.floor(Math.random() * cozyElements.length)];
-            
+            element.innerText = items[Math.floor(Math.random() * items.length)];
             element.style.left = Math.random() * 92 + 4 + '%';
-            element.style.setProperty('--duration', (Math.random() * 6 + 12) + 's');
+            element.style.setProperty('--duration', (Math.random() * 5 + 13) + 's');
             element.style.setProperty('--drift', (Math.random() * 100 - 50) + 'px');
             element.style.setProperty('--rot', (Math.random() * 360 - 180) + 'deg');
             element.style.animationDelay = (Math.random() * -12) + 's';
-            
             container.appendChild(element);
+        }
+    }
+
+    function selectDate(button, value) {
+        document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('selected'));
+        button.classList.add('selected');
+        const customBox = document.getElementById('custom-date-box');
+        if (value === 'custom') {
+            customBox.style.display = 'block';
+            pickedDate = document.getElementById('input-date').value || null;
+        } else {
+            customBox.style.display = 'none';
+            pickedDate = value;
+        }
+        checkStatus();
+    }
+
+    function selectVenue(id, value) {
+        document.querySelectorAll('.location-card').forEach(c => c.classList.remove('selected'));
+        document.getElementById(`loc-${id}`).classList.add('selected');
+        const customBox = document.getElementById('custom-venue-box');
+        if (value === 'custom') {
+            customBox.style.display = 'block';
+            pickedVenue = document.getElementById('input-venue').value || "Свой вариант";
+        } else {
+            customBox.style.display = 'none';
+            pickedVenue = value;
+        }
+        checkStatus();
+    }
+
+    function handleCustomChange() {
+        if (document.getElementById('custom-date-box').style.display === 'block') {
+            pickedDate = document.getElementById('input-date').value || null;
+        }
+        if (document.getElementById('custom-venue-box').style.display === 'block') {
+            pickedVenue = document.getElementById('input-venue').value || "Свой вариант";
+        }
+        checkStatus();
+    }
+
+    function checkStatus() {
+        const link = document.getElementById('submit-btn');
+        if (pickedDate && pickedVenue) {
+            link.classList.add('active');
+            const txt = `Планы на выходные 🍿\nКогда: ${pickedDate}\nФормат: ${pickedVenue}`;
+            link.href = `https://t.me/juwede12?text=${encodeURIComponent(txt)}`;
+        } else {
+            link.classList.remove('active');
+            link.removeAttribute('href');
         }
     }
 
