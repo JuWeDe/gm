@@ -6,18 +6,14 @@
     <title>Планы на выходные 🍿</title>
     <style>
         :root {
-            /* Прохладная, освежающая и уютная палитра */
             --bg-gradient: linear-gradient(135deg, #f5f8f7 0%, #faf8f5 100%);
             --card-bg: rgba(255, 255, 255, 0.93);
             --card-border: rgba(167, 199, 187, 0.4);
-            
             --text-main: #2b3632;
             --text-muted: #5c6e66;
-            
             --btn-selected-bg: linear-gradient(135deg, #edf6f1 0%, #e0f0e7 100%);
             --btn-selected-border: #99c2ae;
             --submit-gradient: linear-gradient(135deg, #aedecd 0%, #ccecd1 100%);
-            
             --radius-lg: 24px;
             --radius-md: 16px;
         }
@@ -43,7 +39,6 @@
             overflow-x: hidden;
         }
 
-        /* Плавные расслабляющие частицы на фоне */
         #ambient-flow {
             position: fixed;
             top: 0;
@@ -141,10 +136,6 @@
             text-align: center;
         }
 
-        .select-btn:active {
-            transform: scale(0.97);
-        }
-
         .select-btn.selected {
             background: var(--btn-selected-bg);
             border-color: var(--btn-selected-border);
@@ -189,10 +180,6 @@
             cursor: pointer;
             transition: all 0.2s ease;
             user-select: none;
-        }
-
-        .location-card:active {
-            transform: scale(0.98);
         }
 
         .location-card.selected {
@@ -255,7 +242,7 @@
     </header>
 
     <div class="intro-text">
-        Раз уж с Лужниками сегодня не вышло — вообще не беда, переигрываем. Давай на длинных выходных (12-14 июня) устроим нормальный уютный сбор. Специально выбрал места поближе, чтобы тебе не пришлось тратить силы на долгую дорогу. Выбирай день и формат:
+        Раз уж с Лужниками сегодня не вышло — вообще не беда, переигрываем. Давай на длинных выходных (12-14 июня) устроим нормальный уютный сбор. Предлагаю сначала спокойно погулять в тени деревьев где-нибудь поближе к фиолетовой ветке, а с кафе разберемся уже на месте по ходу пьесы. Выбирай день и место:
     </div>
 
     <div class="section-title">1. Выбери подходящий день</div>
@@ -272,19 +259,19 @@
         <input type="text" id="input-date" class="custom-input" placeholder="Напиши дату или время..." oninput="handleCustomChange()">
     </div>
 
-    <div class="section-title">2. Локация и формат</div>
+    <div class="section-title">2. Где погуляем?</div>
     <div class="locations-stack">
-        <div class="location-card" id="loc-1" onclick="selectVenue(1, 'Чилл у м. Котельники (погулять + зайти в кафе)')">
-            <div class="loc-name">🏡 Максимально локально</div>
-            <div class="loc-desc">Соберемся прямо возле м. Котельники. Спокойно погуляем без лишней суеты и зайдем в уютное кафе поблизости, чтобы тебе было комфортно.</div>
+        <div class="location-card" id="loc-1" onclick="selectVenue(1, 'Прогулка в парке Кузьминки')">
+            <div class="loc-name">🌲 Парк Кузьминки</div>
+            <div class="loc-desc">Буквально 10 минут от Котельников. Огромный зеленый парк, каскад прудов, тенистые аллеи и куча мест, где можно взять холодный кофе/лимонад.</div>
         </div>
-        <div class="location-card" id="loc-2" onclick="selectVenue(2, 'Движ по фиолетовой ветке в сторону центра')">
-            <div class="loc-name">🚇 Прогулка ближе к центру</div>
-            <div class="loc-desc">Сместимся по фиолетовой ветке чуть ближе к центру (например, Таганка или Кузьминки). Проверенное классное место, приятная атмосфера и вкусная еда.</div>
+        <div class="location-card" id="loc-2" onclick="selectVenue(2, 'Прогулка в усадьбе Люблино')">
+            <div class="loc-name">🏛️ Парк-усадьба Люблино</div>
+            <div class="loc-desc">Очень ухоженный, красивый и более тихий парк вокруг исторической усадьбы и большого Люблинского пруда. Отличный маршрут для неспешного чилла.</div>
         </div>
         <div class="location-card" id="loc-3" onclick="selectVenue(3, 'custom')">
-            <div class="loc-name">✨ Твое секретное место</div>
-            <div class="loc-desc">Если у тебя есть конкретная идея, кафешка, куда ты давно хотела сходить, или хочется просто посидеть на чилле — пиши сюда.</div>
+            <div class="loc-name">✨ Твой вариант парка</div>
+            <div class="loc-desc">Если тебе хочется в какое-то другое конкретное место поблизости, где много деревьев и нет суеты — пиши сюда.</div>
         </div>
     </div>
     <div id="custom-venue-box" class="input-wrapper">
@@ -360,7 +347,7 @@
         const link = document.getElementById('submit-btn');
         if (pickedDate && pickedVenue) {
             link.classList.add('active');
-            const txt = `Планы на выходные 🍿\nКогда: ${pickedDate}\nФормат: ${pickedVenue}`;
+            const txt = `Планы на выходные 🍿\nКогда: ${pickedDate}\nГде гуляем: ${pickedVenue}\n(а с кафе разберемся на месте)`;
             link.href = `https://t.me/juwede12?text=${encodeURIComponent(txt)}`;
         } else {
             link.classList.remove('active');
