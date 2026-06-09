@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -68,7 +69,7 @@
 
         .wrapper {
             width: 100%;
-            max-width: 410px;
+            max-width: 420px;
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
@@ -176,7 +177,7 @@
             background: rgba(255, 255, 255, 0.6);
             border: 1px solid rgba(0, 0, 0, 0.01);
             border-radius: var(--radius-md);
-            padding: 18px;
+            padding: 16px;
             cursor: pointer;
             transition: all 0.2s ease;
             user-select: none;
@@ -189,7 +190,7 @@
         }
 
         .loc-name {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: var(--text-main);
             margin-bottom: 4px;
@@ -200,8 +201,8 @@
         }
 
         .loc-desc {
-            font-size: 13px;
-            line-height: 1.45;
+            font-size: 12.5px;
+            line-height: 1.4;
             color: var(--text-muted);
         }
 
@@ -242,7 +243,7 @@
     </header>
 
     <div class="intro-text">
-        Раз уж с Лужниками не вышло — вообще не беда, переигрываем. Давай на длинных выходных (12-14 июня) устроим нормальный уютный сбор. Предлагаю сначала спокойно погулять в тени деревьев где-нибудь поближе к фиолетовой ветке, а с кафе разберемся уже на месте по ходу пьесы. Выбирай день и место:
+        Раз уж с Лужниками не вышло — вообще не беда, переигрываем. Давай на длинных выходных (12-14 июня) устроим нормальный уютный сбор. Предлагаю сначала спокойно встретиться где-нибудь поближе к фиолетовой ветке, а с кафе разберемся уже на месте по ходу пьесы. Выбирай день и формат:
     </div>
 
     <div class="section-title">1. Выбери подходящий день</div>
@@ -259,19 +260,31 @@
         <input type="text" id="input-date" class="custom-input" placeholder="Напиши дату или время..." oninput="handleCustomChange()">
     </div>
 
-    <div class="section-title">2. Где погуляем?</div>
+    <div class="section-title">2. Куда рванем?</div>
     <div class="locations-stack">
-        <div class="location-card" id="loc-1" onclick="selectVenue(1, 'Прогулка в парке Кузьминки')">
+        <div class="location-card" id="loc-1" onclick="selectVenue(1, 'Парк Кузьминки')">
             <div class="loc-name">🌲 Парк Кузьминки</div>
-            <div class="loc-desc">Буквально 10 минут от Котельников. Огромный зеленый парк, каскад прудов, тенистые аллеи и куча мест, где можно взять холодный кофе/лимонад.</div>
+            <div class="loc-desc">Буквально 10 минут от Котельников. Огромный зеленый массив, пруды, деревянные набережные и куча тени.</div>
         </div>
-        <div class="location-card" id="loc-2" onclick="selectVenue(2, 'Прогулка в усадьбе Люблино')">
-            <div class="loc-name">🏛️ Парк-усадьба Люблино</div>
-            <div class="loc-desc">Очень ухоженный, красивый и более тихий парк вокруг исторической усадьбы и большого Люблинского пруда. Отличный маршрут для неспешного чилла.</div>
+        <div class="location-card" id="loc-2" onclick="selectVenue(2, 'Кино в Кузьминках (кинотеатр Высота)')">
+            <div class="loc-name">🍿 Сходить в кино («Высота» у м. Кузьминки)</div>
+            <div class="loc-desc">Если на улице будет слишком душно — спрячемся под кондеем в обновленном кинотеатре, наберем попкорна, а потом погуляем.</div>
         </div>
-        <div class="location-card" id="loc-3" onclick="selectVenue(3, 'custom')">
-            <div class="loc-name">✨ Твой вариант парка</div>
-            <div class="loc-desc">Если тебе хочется в какое-то другое конкретное место поблизости, где много деревьев и нет суеты — пиши сюда.</div>
+        <div class="location-card" id="loc-3" onclick="selectVenue(3, 'Усадьба Кусково')">
+            <div class="loc-name">🏛️ Романтичное Кусково</div>
+            <div class="loc-desc">Топовое атмосферное место на ЮВАО. Французский парк, старинный дворец у воды — идеальный маршрут для красивого свидания.</div>
+        </div>
+        <div class="location-card" id="loc-4" onclick="selectVenue(4, 'Усадьба Люблино')">
+            <div class="loc-name">🏡 Парк-усадьба Люблино</div>
+            <div class="loc-desc">Ухоженный и более тихий, камерный парк вокруг большого Люблинского пруда. Очень расслабленный вайб.</div>
+        </div>
+        <div class="location-card" id="loc-5" onclick="selectVenue(5, 'Таганский парк')">
+            <div class="loc-name">🚇 Таганский парк (ближе к центру)</div>
+            <div class="loc-desc">20 минут по прямой ветке. Уютный парк, а вокруг — сотни крутых атмосферных кафешек на любой вкус.</div>
+        </div>
+        <div class="location-card" id="loc-6" onclick="selectVenue(6, 'custom')">
+            <div class="loc-name">✨ Твое секретное место</div>
+            <div class="loc-desc">Если тебе хочется в какое-то другое конкретное место — пиши сюда.</div>
         </div>
     </div>
     <div id="custom-venue-box" class="input-wrapper">
@@ -347,7 +360,7 @@
         const link = document.getElementById('submit-btn');
         if (pickedDate && pickedVenue) {
             link.classList.add('active');
-            const txt = `Планы на выходные 🍿\nКогда: ${pickedDate}\nГде гуляем: ${pickedVenue}\n(а с кафе разберемся на месте)`;
+            const txt = `Планы на выходные 🍿\nКогда: ${pickedDate}\nФормат: ${pickedVenue}\n(а дальше по ходу пьесы)`;
             link.href = `https://t.me/juwede12?text=${encodeURIComponent(txt)}`;
         } else {
             link.classList.remove('active');
