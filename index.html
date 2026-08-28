@@ -129,9 +129,9 @@
         }
         .format-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 8px;
-            margin-bottom: 24px;
+            margin-bottom: 12px;
         }
         @media (max-width: 480px) {
             .format-grid { grid-template-columns: 1fr; }
@@ -181,54 +181,60 @@
             opacity: 0.6;
         }
 
-        .music-block {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            flex-wrap: wrap;
-            background: rgba(255,255,255,0.015);
-            border-radius: 20px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
-            border: 1px solid rgba(220, 180, 150, 0.04);
+        .custom-input-wrapper {
+            display: none;
+            margin-bottom: 20px;
+            animation: slideDown 0.25s ease;
         }
-        .music-block label {
-            font-size: 14px;
-            color: rgba(220, 200, 185, 0.6);
-            font-weight: 300;
-            flex: 1;
-            min-width: 130px;
-        }
-        .music-block label .brent {
-            color: #dcb89e;
-            font-weight: 500;
-        }
-        .music-block label .kanye {
-            color: rgba(200, 180, 165, 0.25);
-            font-weight: 300;
-            font-size: 12px;
+        .custom-input-wrapper.show {
             display: block;
-            margin-top: 2px;
         }
-        .music-block input {
-            flex: 2;
-            min-width: 140px;
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .custom-input {
+            width: 100%;
             background: rgba(255,255,255,0.04);
             border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 40px;
-            padding: 10px 18px;
+            border-radius: 16px;
+            padding: 14px 18px;
             font-family: 'Inter', sans-serif;
             font-size: 14px;
             color: #f0e5dc;
             outline: none;
             transition: border 0.3s;
         }
-        .music-block input::placeholder {
+        .custom-input::placeholder {
             color: rgba(200, 180, 165, 0.2);
             font-weight: 300;
         }
-        .music-block input:focus {
+        .custom-input:focus {
             border-color: rgba(220, 180, 150, 0.2);
+        }
+
+        .guests-block {
+            background: rgba(255,255,255,0.015);
+            border-radius: 20px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(220, 180, 150, 0.04);
+        }
+        .guests-block p {
+            font-size: 14px;
+            color: rgba(220, 200, 185, 0.6);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+        .guests-block .guest-name {
+            color: #dcb89e;
+            font-weight: 500;
+        }
+        .guests-block .highlight {
+            color: rgba(220, 200, 185, 0.8);
+            font-weight: 400;
         }
 
         .section-label {
@@ -372,8 +378,6 @@
             h1 { font-size: 26px; }
             .date-grid { grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); }
             .time-btn { padding: 8px 14px; font-size: 13px; }
-            .music-block { flex-direction: column; align-items: stretch; }
-            .music-block input { min-width: unset; }
         }
     </style>
 </head>
@@ -381,9 +385,9 @@
 
 <div class="card">
 
-    <!-- ===== ТАЙМЕР ===== -->
+    <!-- ===== ТАЙМЕР С ЧЕРЕПОМ ===== -->
     <div class="countdown">
-        ⏳ до начала учёбы — <span id="daysLeft">...</span> дней
+        💀 до начала учёбы — <span id="daysLeft">...</span> дней
     </div>
 
     <!-- ===== ЗАГОЛОВОК ===== -->
@@ -394,12 +398,11 @@
         Я обещал научить — и я <strong>сдержу слово</strong>.
     </div>
 
-    <!-- ===== ФЛИРТ ===== -->
+    <!-- ===== ФЛИРТ (без повода для смеха) ===== -->
     <div class="flirt-block">
         <p>
-            <span class="highlight">Честно:</span> я умею играть, но очень плохо 😄<br/>
-            Так что мы будем <span class="highlight">учиться вместе</span> —
-            и каждый мой промах станет поводом для смеха.
+            <span class="highlight">Честно:</span> я не умею играть в бильярд 😄<br/>
+            Так что мы будем <span class="highlight">учиться вместе</span>.
         </p>
     </div>
 
@@ -410,13 +413,13 @@
         <button class="format-btn" data-format="billiard">
             <span class="icon">🎱</span>
             <span class="title">Только бильярд</span>
-            <span class="desc">классика, без собак</span>
+            <span class="desc">классика</span>
         </button>
 
         <button class="format-btn" data-format="billiard+dog">
             <span class="icon">🐕</span>
             <span class="title">Бильярд + прогулка</span>
-            <span class="desc">понимаю, как ты с ней намучилась, но если хочешь — просто погуляем в парке, без напряга</span>
+            <span class="desc">с твоей собакой в парке</span>
         </button>
 
         <button class="format-btn" data-format="billiard+ocean">
@@ -425,15 +428,25 @@
             <span class="desc">нишево, но вдруг? 😅</span>
         </button>
 
+        <button class="format-btn" data-format="custom" id="customFormatBtn">
+            <span class="icon">✨</span>
+            <span class="title">Свой вариант</span>
+            <span class="desc">напишу в поле ниже</span>
+        </button>
+
     </div>
 
-    <!-- ===== МУЗЫКА ===== -->
-    <div class="music-block">
-        <label>
-            <span class="brent">Brent Faiyaz</span> — какой трек включим?
-            <span class="kanye">(а я поставлю тебе Канье по пути)</span>
-        </label>
-        <input type="text" id="songInput" placeholder="Напиши название..." />
+    <!-- ===== ТЕКСТФИЛД ДЛЯ СВОЕГО ВАРИАНТА ===== -->
+    <div class="custom-input-wrapper" id="customFormatWrapper">
+        <input type="text" id="customFormatInput" class="custom-input" placeholder="Напиши свой вариант..." />
+    </div>
+
+    <!-- ===== БЛОК С ГОСТЯМИ ===== -->
+    <div class="guests-block">
+        <p>
+            🎵 Приглашённые гости: <span class="guest-name">Канье Вест</span>, <span class="guest-name">Brent Faiyaz</span>.<br/>
+            <span class="highlight">Но если ни одного не будет — я делаю ещё один ивент.</span>
+        </p>
     </div>
 
     <!-- ===== ДАТА ===== -->
@@ -444,7 +457,7 @@
     <div class="section-label">⏱️ время (встреча на Трубной)</div>
     <div class="time-grid" id="timeGrid"></div>
 
-    <!-- ===== КНОПКА (ССЫЛКА В ТГ) ===== -->
+    <!-- ===== КНОПКА ===== -->
     <div class="submit-container">
         <a href="#" id="submitBtn" class="tg-link">
             💫 Написать в Telegram
@@ -456,9 +469,9 @@
 
 <script>
     // =============================================================
-    //  🎯 ТВОЙ USERNAME В TELEGRAM (без @)
+    //  ТВОЙ USERNAME В TELEGRAM (без @)
     // =============================================================
-    const TG_USERNAME = 'R0M4H';  // ← замени на свой username
+    const TG_USERNAME = 'juwede12';  // ← замени на свой
 
     // =============================================================
     //  КОНФИГ
@@ -477,9 +490,10 @@
     // =============================================================
     //  СОСТОЯНИЕ
     // =============================================================
-    let selectedFormat = null;
+    let selectedFormat = null;   // 'billiard' | 'billiard+dog' | 'billiard+ocean' | 'custom'
     let selectedDate = null;
     let selectedTime = null;
+    let customFormatText = '';
 
     // =============================================================
     //  ТАЙМЕР
@@ -499,13 +513,33 @@
     // =============================================================
     //  ФОРМАТ
     // =============================================================
+    const formatGrid = document.getElementById('formatGrid');
+    const customFormatWrapper = document.getElementById('customFormatWrapper');
+    const customFormatInput = document.getElementById('customFormatInput');
+
     document.querySelectorAll('.format-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             selectedFormat = btn.dataset.format;
+
+            if (selectedFormat === 'custom') {
+                customFormatWrapper.classList.add('show');
+                customFormatText = customFormatInput.value.trim() || 'Свой вариант';
+            } else {
+                customFormatWrapper.classList.remove('show');
+                customFormatText = '';
+            }
+
             updateSubmitButton();
         });
+    });
+
+    customFormatInput.addEventListener('input', () => {
+        if (selectedFormat === 'custom') {
+            customFormatText = customFormatInput.value.trim() || 'Свой вариант';
+            updateSubmitButton();
+        }
     });
 
     // =============================================================
@@ -514,7 +548,6 @@
     const dateGrid = document.getElementById('dateGrid');
     const timeGrid = document.getElementById('timeGrid');
     const submitBtn = document.getElementById('submitBtn');
-    const songInput = document.getElementById('songInput');
 
     function generateDates() {
         const dates = [];
@@ -633,7 +666,6 @@
         const formatOk = selectedFormat !== null;
         const dateOk = selectedDate !== null;
         const timeOk = selectedTime !== null;
-        const song = songInput.value.trim() || '❤️ твой выбор';
 
         if (formatOk && dateOk && timeOk) {
             const dateStr = selectedDate.toLocaleDateString('ru-RU', {
@@ -644,18 +676,20 @@
 
             let emoji = '🎱';
             let formatLabel = 'бильярд';
+
             if (selectedFormat === 'billiard+dog') {
                 emoji = '🐕';
-                formatLabel = 'бильярд + прогулка с собакой в парке (без напряга)';
+                formatLabel = 'бильярд + прогулка с собакой в парке';
             } else if (selectedFormat === 'billiard+ocean') {
                 emoji = '🐠';
                 formatLabel = 'бильярд + Москвариум';
+            } else if (selectedFormat === 'custom') {
+                emoji = '✨';
+                formatLabel = customFormatText || 'Свой вариант';
             }
 
-            // Формируем сообщение для Telegram
-            const message = `🎱 Кристина согласилась!\n\n📅 ${dateStr}\n⏱️ ${selectedTime} (встреча на Трубной)\n${emoji} ${formatLabel}\n🎵 Трек: "${song}"\n\n❤️ Жду!`;
+            const message = `🎱 Кристина согласилась!\n\n📅 ${dateStr}\n⏱️ ${selectedTime} (встреча на Трубной)\n${emoji} ${formatLabel}\n\n❤️ Жду!`;
 
-            // Ссылка на Telegram
             submitBtn.href = `https://t.me/${TG_USERNAME}?text=${encodeURIComponent(message)}`;
             submitBtn.className = 'tg-link active';
             submitBtn.innerHTML = `
@@ -675,11 +709,6 @@
             `;
         }
     }
-
-    // =============================================================
-    //  ОБНОВЛЕНИЕ КНОПКИ ПРИ ВВОДЕ ТРЕКА
-    // =============================================================
-    songInput.addEventListener('input', updateSubmitButton);
 
     // =============================================================
     //  СТАРТ
