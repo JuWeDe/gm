@@ -385,7 +385,7 @@
 
 <div class="card">
 
-    <!-- ===== ТАЙМЕР С ЧЕРЕПОМ ===== -->
+    <!-- ===== ТАЙМЕР ===== -->
     <div class="countdown">
         💀 до начала учёбы — <span id="daysLeft">...</span> дней
     </div>
@@ -398,7 +398,7 @@
         Я обещал научить — и я <strong>сдержу слово</strong>.
     </div>
 
-    <!-- ===== ФЛИРТ (без повода для смеха) ===== -->
+    <!-- ===== ФЛИРТ ===== -->
     <div class="flirt-block">
         <p>
             <span class="highlight">Честно:</span> я не умею играть в бильярд 😄<br/>
@@ -471,7 +471,7 @@
     // =============================================================
     //  ТВОЙ USERNAME В TELEGRAM (без @)
     // =============================================================
-    const TG_USERNAME = 'R0M4H';  // ← замени на свой
+    const TG_USERNAME = 'R0M4H'; 
 
     // =============================================================
     //  КОНФИГ
@@ -480,17 +480,23 @@
         studyDate: new Date('2026-09-01'),
         billiardPlace: 'Billie',
         metro: 'Трубная',
-        workStart: 9,
-        workEnd: 18,
-        workEndFriday: 17,
-        availableDays: 7,
         travelTime: 40,
+        availableDays: 14,
+        // Расписание: пн-чт после 18:00, пт после 17:00
+        schedule: {
+            1: { start: 18, end: 23 }, // Пн
+            2: { start: 18, end: 23 }, // Вт
+            3: { start: 18, end: 23 }, // Ср
+            4: { start: 18, end: 23 }, // Чт
+            5: { start: 17, end: 23 }, // Пт
+            // 0,6 — выходные (не показываем)
+        }
     };
 
     // =============================================================
     //  СОСТОЯНИЕ
     // =============================================================
-    let selectedFormat = null;   // 'billiard' | 'billiard+dog' | 'billiard+ocean' | 'custom'
+    let selectedFormat = null;
     let selectedDate = null;
     let selectedTime = null;
     let customFormatText = '';
@@ -552,10 +558,20 @@
     function generateDates() {
         const dates = [];
         const now = new Date();
-        for (let i = 1; i <= CONFIG.availableDays; i++) {
+        let daysAdded = 0;
+        let attempts = 0;
+        const maxAttempts = 30;
+
+        while (daysAdded < CONFIG.availableDays && attempts < maxAttempts) {
+            attempts++;
             const d = new Date(now);
-            d.setDate(d.getDate() + i);
-            dates.push(d);
+            d.setDate(d.getDate() + attempts);
+            const dow = d.getDay();
+            // Показываем только будние дни (пн-пт)
+            if (dow >= 1 && dow <= 5) {
+                dates.push(d);
+                daysAdded++;
+            }
         }
         return dates;
     }
@@ -595,7 +611,7 @@
     }
 
     // =============================================================
-    //  ВРЕМЯ
+    //  ВРЕМЯ (с учётом нового расписания)
     // =============================================================
     function renderTimes() {
         timeGrid.innerHTML = '';
@@ -609,9 +625,9 @@
         }
 
         const dow = selectedDate.getDay();
-        let endH = CONFIG.workEnd;
-        if (dow === 5) endH = CONFIG.workEndFriday;
-        if (dow === 0 || dow === 6) {
+        const schedule = CONFIG.schedule[dow];
+
+        if (!schedule) {
             const msg = document.createElement('div');
             msg.style.cssText = 'color: rgba(200,180,165,0.3); font-size:13px; padding:8px 0;';
             msg.textContent = '😌 Выходной — выбери будний день';
@@ -623,32 +639,40 @@
         const isToday = selectedDate.toDateString() === now.toDateString();
 
         let hasTime = false;
-        for (let h = CONFIG.workStart; h < endH; h++) {
-            if (isToday && h <= now.getHours()) continue;
+        // Показываем время с шагом 30 минут
+        for (let h = schedule.start; h < schedule.end; h++) {
+            for (let m = 0; m < 60; m += 30) {
+                // Пропускаем время, которое уже прошло сегодня
+                if (isToday && (h < now.getHours() || (h === now.getHours() && m <= now.getMinutes()))) {
+                    continue;
+                }
 
-            const timeStr = `${String(h).padStart(2, '0')}:00`;
-            const btn = document.createElement('button');
-            btn.className = 'time-btn';
-            btn.dataset.time = timeStr;
+                const timeStr = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+                const btn = document.createElement('button');
+                btn.className = 'time-btn';
+                btn.dataset.time = timeStr;
 
-            const leaveHour = h - Math.ceil(CONFIG.travelTime / 60);
-            const leaveMin = CONFIG.travelTime % 60;
-            let leaveStr = '';
-            if (leaveHour >= 0) {
-                leaveStr = `выезд ~${String(leaveHour).padStart(2, '0')}:${String(leaveMin).padStart(2, '0')}`;
-            } else {
-                leaveStr = '🚇';
+                // Время выезда с учётом дороги
+                const totalMinutes = h * 60 + m - CONFIG.travelTime;
+                let leaveHour = Math.floor(totalMinutes / 60);
+                let leaveMin = totalMinutes % 60;
+                let leaveStr = '';
+                if (leaveHour >= 0) {
+                    leaveStr = `выезд ~${String(leaveHour).padStart(2, '0')}:${String(leaveMin).padStart(2, '0')}`;
+                } else {
+                    leaveStr = '🚇';
+                }
+                btn.innerHTML = `${timeStr} <span class="sub-leave">${leaveStr}</span>`;
+
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    selectedTime = timeStr;
+                    updateSubmitButton();
+                });
+                timeGrid.appendChild(btn);
+                hasTime = true;
             }
-            btn.innerHTML = `${timeStr} <span class="sub-leave">${leaveStr}</span>`;
-
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
-                btn.classList.add('selected');
-                selectedTime = timeStr;
-                updateSubmitButton();
-            });
-            timeGrid.appendChild(btn);
-            hasTime = true;
         }
 
         if (!hasTime) {
