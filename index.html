@@ -1,376 +1,692 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Планы на выходные 🍿</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Кристина → Бильярд 🎱</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
     <style>
-        :root {
-            --bg-gradient: linear-gradient(135deg, #f5f8f7 0%, #faf8f5 100%);
-            --card-bg: rgba(255, 255, 255, 0.93);
-            --card-border: rgba(167, 199, 187, 0.4);
-            --text-main: #2b3632;
-            --text-muted: #5c6e66;
-            --btn-selected-bg: linear-gradient(135deg, #edf6f1 0%, #e0f0e7 100%);
-            --btn-selected-border: #99c2ae;
-            --submit-gradient: linear-gradient(135deg, #aedecd 0%, #ccecd1 100%);
-            --radius-lg: 24px;
-            --radius-md: 16px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: var(--bg-gradient);
-            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
-            padding: 24px 14px;
-            position: relative;
-            overflow-x: hidden;
+            align-items: center;
+            padding: 20px;
+            background: #0d0b0e;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(180, 140, 110, 0.06), transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(200, 150, 130, 0.04), transparent 40%);
         }
 
-        #ambient-flow {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .card {
+            max-width: 560px;
             width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
+            background: rgba(18, 16, 20, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(220, 190, 170, 0.08);
+            border-radius: 44px;
+            padding: 40px 32px 44px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(220, 190, 170, 0.04);
+            animation: fadeUp 0.9s ease both;
+            position: relative;
             overflow: hidden;
-            opacity: 0.5;
         }
-
-        .bg-particle {
+        .card::after {
+            content: '';
             position: absolute;
-            bottom: -50px;
-            font-size: 20px;
-            animation: cozyFloat var(--duration) linear infinite;
-            user-select: none;
+            top: -60%;
+            right: -30%;
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle, rgba(200, 160, 140, 0.03), transparent 70%);
+            pointer-events: none;
         }
 
-        @keyframes cozyFloat {
-            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
-            15% { opacity: 1; }
-            85% { opacity: 1; }
-            100% { transform: translateY(-115vh) translateX(var(--drift)) rotate(var(--rot)); opacity: 0; }
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
-        .wrapper {
-            width: 100%;
-            max-width: 420px;
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius-lg);
-            padding: 32px 20px;
-            box-shadow: 0 20px 45px rgba(167, 199, 187, 0.15);
-            position: relative;
-            z-index: 10;
+        .countdown {
+            display: inline-block;
+            background: rgba(220, 180, 150, 0.06);
+            border: 1px solid rgba(220, 180, 150, 0.08);
+            border-radius: 40px;
+            padding: 6px 18px 6px 14px;
+            font-size: 12px;
+            color: rgba(220, 190, 170, 0.5);
+            letter-spacing: 0.5px;
+            margin-bottom: 18px;
+            font-weight: 300;
         }
-
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            color: #1a2823;
-        }
-
-        .intro-text {
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(167, 199, 187, 0.3);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            font-size: 14px;
-            line-height: 1.5;
-            color: var(--text-main);
-            text-align: left;
-            margin-bottom: 24px;
-        }
-
-        .section-title {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #718a7f;
-            margin: 24px 0 12px 4px;
-        }
-
-        .btn-grid {
-            display: grid;
-            gap: 10px;
-        }
-        
-        .grid-3 { grid-template-columns: repeat(3, 1fr); }
-        .grid-2 { grid-template-columns: 1fr 1fr; }
-
-        .select-btn {
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(0, 0, 0, 0.02);
-            border-radius: var(--radius-md);
-            color: var(--text-main);
-            padding: 15px 10px;
-            font-size: 14px;
+        .countdown span {
+            color: #dcb89e;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            outline: none;
-            user-select: none;
-            text-align: center;
-        }
-
-        .select-btn.selected {
-            background: var(--btn-selected-bg);
-            border-color: var(--btn-selected-border);
-            color: #1a4730;
-            font-weight: 700;
-            box-shadow: 0 6px 15px rgba(153, 194, 174, 0.3);
-        }
-
-        .input-wrapper {
-            display: none;
-            margin-top: 10px;
-            animation: slideUp 0.25s ease;
-        }
-
-        .custom-input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid var(--btn-selected-border);
-            border-radius: var(--radius-md);
-            padding: 15px;
-            color: var(--text-main);
             font-size: 14px;
-            outline: none;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .locations-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .location-card {
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(0, 0, 0, 0.01);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            user-select: none;
-        }
-
-        .location-card.selected {
-            border-color: var(--btn-selected-border);
-            background: rgba(237, 246, 241, 0.8);
-            box-shadow: 0 10px 20px rgba(153, 194, 174, 0.2);
-        }
-
-        .loc-name {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text-main);
+        .greeting {
+            font-size: 13px;
+            font-weight: 300;
+            color: rgba(220, 190, 170, 0.35);
+            letter-spacing: 2px;
+            text-transform: uppercase;
             margin-bottom: 4px;
         }
-
-        .location-card.selected .loc-name {
-            color: #1a4730;
+        h1 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #f0e5dc;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+        h1 span {
+            color: #dcb89e;
+            font-weight: 300;
+        }
+        .sub {
+            color: rgba(220, 190, 170, 0.5);
+            font-size: 15px;
+            font-weight: 300;
+            line-height: 1.5;
+            margin-bottom: 24px;
+            padding-left: 16px;
+            border-left: 2px solid rgba(220, 180, 150, 0.15);
+        }
+        .sub strong {
+            color: #f0e5dc;
+            font-weight: 500;
         }
 
-        .loc-desc {
-            font-size: 12.5px;
-            line-height: 1.4;
-            color: var(--text-muted);
+        .flirt-block {
+            background: rgba(255,255,255,0.02);
+            border-radius: 20px;
+            padding: 18px 20px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(220, 180, 150, 0.05);
+        }
+        .flirt-block p {
+            font-size: 14px;
+            color: rgba(220, 200, 185, 0.75);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+        .flirt-block .highlight {
+            color: #dcb89e;
+            font-weight: 400;
+        }
+
+        .format-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(200, 180, 165, 0.25);
+            margin-bottom: 12px;
+        }
+        .format-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        @media (max-width: 480px) {
+            .format-grid { grid-template-columns: 1fr; }
+        }
+        .format-btn {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 18px;
+            padding: 14px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            color: rgba(200, 185, 170, 0.4);
+        }
+        .format-btn:hover {
+            background: rgba(220, 180, 150, 0.04);
+            border-color: rgba(220, 180, 150, 0.08);
+        }
+        .format-btn .icon {
+            font-size: 26px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .format-btn .title {
+            font-size: 12px;
+            font-weight: 500;
+            color: rgba(220, 200, 185, 0.5);
+            line-height: 1.2;
+        }
+        .format-btn .desc {
+            font-size: 10px;
+            opacity: 0.35;
+            font-weight: 300;
+            margin-top: 2px;
+            line-height: 1.3;
+        }
+        .format-btn.selected {
+            background: rgba(220, 180, 150, 0.08);
+            border-color: #dcb89e;
+            box-shadow: 0 0 30px rgba(220, 180, 150, 0.04);
+        }
+        .format-btn.selected .title {
+            color: #f0e5dc;
+        }
+        .format-btn.selected .desc {
+            opacity: 0.6;
+        }
+
+        .music-block {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            background: rgba(255,255,255,0.015);
+            border-radius: 20px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(220, 180, 150, 0.04);
+        }
+        .music-block label {
+            font-size: 14px;
+            color: rgba(220, 200, 185, 0.6);
+            font-weight: 300;
+            flex: 1;
+            min-width: 130px;
+        }
+        .music-block label .brent {
+            color: #dcb89e;
+            font-weight: 500;
+        }
+        .music-block label .kanye {
+            color: rgba(200, 180, 165, 0.25);
+            font-weight: 300;
+            font-size: 12px;
+            display: block;
+            margin-top: 2px;
+        }
+        .music-block input {
+            flex: 2;
+            min-width: 140px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 40px;
+            padding: 10px 18px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #f0e5dc;
+            outline: none;
+            transition: border 0.3s;
+        }
+        .music-block input::placeholder {
+            color: rgba(200, 180, 165, 0.2);
+            font-weight: 300;
+        }
+        .music-block input:focus {
+            border-color: rgba(220, 180, 150, 0.2);
+        }
+
+        .section-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(200, 180, 165, 0.25);
+            margin-bottom: 12px;
+        }
+        .date-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .date-btn {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 12px 4px;
+            text-align: center;
+            color: rgba(200, 185, 170, 0.4);
+            font-size: 13px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.3;
+        }
+        .date-btn .day {
+            font-weight: 600;
+            font-size: 15px;
+            color: rgba(220, 200, 185, 0.6);
+            display: block;
+        }
+        .date-btn .date-num {
+            font-size: 11px;
+            opacity: 0.4;
+        }
+        .date-btn:hover {
+            background: rgba(220, 180, 150, 0.06);
+            border-color: rgba(220, 180, 150, 0.12);
+            transform: translateY(-2px);
+        }
+        .date-btn.selected {
+            background: rgba(220, 180, 150, 0.1);
+            border-color: #dcb89e;
+            color: #f0e5dc;
+            box-shadow: 0 0 30px rgba(220, 180, 150, 0.04);
+        }
+        .date-btn.selected .day { color: #f0e5dc; }
+
+        .time-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 28px;
+        }
+        .time-btn {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 40px;
+            padding: 10px 20px;
+            color: rgba(200, 185, 170, 0.4);
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .time-btn:hover {
+            background: rgba(220, 180, 150, 0.05);
+            border-color: rgba(220, 180, 150, 0.1);
+        }
+        .time-btn.selected {
+            background: rgba(220, 180, 150, 0.08);
+            border-color: #dcb89e;
+            color: #f0e5dc;
+        }
+        .time-btn .sub-leave {
+            font-size: 10px;
+            opacity: 0.3;
+            display: block;
+            font-weight: 300;
         }
 
         .submit-container {
-            margin-top: 32px;
+            margin-top: 8px;
         }
 
         .tg-link {
             display: block;
             width: 100%;
-            background: #e2e8f0;
-            color: #a0aec0;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 60px;
+            padding: 18px 24px;
             text-align: center;
-            padding: 18px;
-            border-radius: var(--radius-md);
             text-decoration: none;
-            font-size: 16px;
-            font-weight: 700;
-            transition: all 0.3s ease;
+            font-size: 17px;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            color: rgba(240, 229, 220, 0.3);
+            transition: all 0.4s ease;
+            letter-spacing: 0.2px;
+            cursor: default;
             pointer-events: none;
         }
 
         .tg-link.active {
-            background: var(--submit-gradient);
-            color: #1a2823;
+            background: linear-gradient(135deg, rgba(220, 180, 150, 0.12), rgba(220, 180, 150, 0.03));
+            border-color: rgba(220, 180, 150, 0.2);
+            color: #f0e5dc;
+            cursor: pointer;
             pointer-events: auto;
-            box-shadow: 0 10px 25px rgba(174, 222, 205, 0.4);
+            box-shadow: 0 10px 30px rgba(220, 180, 150, 0.08);
+        }
+
+        .tg-link.active:hover {
+            background: linear-gradient(135deg, rgba(220, 180, 150, 0.18), rgba(220, 180, 150, 0.05));
+            border-color: rgba(220, 180, 150, 0.3);
+            transform: scale(1.01);
+            box-shadow: 0 8px 40px rgba(220, 180, 150, 0.1);
+        }
+
+        .tg-link .subtext {
+            display: block;
+            font-size: 12px;
+            font-weight: 300;
+            opacity: 0.35;
+            margin-top: 2px;
+            letter-spacing: 0.3px;
+        }
+
+        .tg-link.active .subtext {
+            opacity: 0.5;
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 28px 18px 32px; border-radius: 32px; }
+            h1 { font-size: 26px; }
+            .date-grid { grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); }
+            .time-btn { padding: 8px 14px; font-size: 13px; }
+            .music-block { flex-direction: column; align-items: stretch; }
+            .music-block input { min-width: unset; }
         }
     </style>
 </head>
 <body>
 
-<div id="ambient-flow"></div>
+<div class="card">
 
-<div class="wrapper">
-    <header>
-        <h1>Планы на выходные 🍿</h1>
-    </header>
-
-    <div class="intro-text">
-        Раз уж с Лужниками не вышло — вообще не беда, переигрываем. Давай на длинных выходных (12-14 июня) устроим нормальный уютный сбор. Предлагаю сначала спокойно встретиться где-нибудь поближе к фиолетовой ветке, а с кафе разберемся уже на месте по ходу пьесы. Выбирай день и формат:
+    <!-- ===== ТАЙМЕР ===== -->
+    <div class="countdown">
+        ⏳ до начала учёбы — <span id="daysLeft">...</span> дней
     </div>
 
-    <div class="section-title">1. Выбери подходящий день</div>
-    <div class="btn-grid grid-3">
-        <button class="select-btn date-btn" onclick="selectDate(this, '12 июня (пятница)')">12 июня</button>
-        <button class="select-btn date-btn" onclick="selectDate(this, '13 июня (суббота)')">13 июня</button>
-        <button class="select-btn date-btn" onclick="selectDate(this, '14 июня (воскресенье)')">14 июня</button>
-    </div>
-    <div class="btn-grid grid-2" style="margin-top: 8px;">
-        <button class="select-btn date-btn" onclick="selectDate(this, 'Решим по ходу дела')">По ходу дела</button>
-        <button class="select-btn date-btn" onclick="selectDate(this, 'custom')">Свой вариант</button>
-    </div>
-    <div id="custom-date-box" class="input-wrapper">
-        <input type="text" id="input-date" class="custom-input" placeholder="Напиши дату или время..." oninput="handleCustomChange()">
+    <!-- ===== ЗАГОЛОВОК ===== -->
+    <div class="greeting">✦ приглашение</div>
+    <h1>Кристина, <span>сыграем?</span></h1>
+    <div class="sub">
+        🎱 <strong>Бильярдная Billie</strong> · метро Трубная<br/>
+        Я обещал научить — и я <strong>сдержу слово</strong>.
     </div>
 
-    <div class="section-title">2. Куда рванем?</div>
-    <div class="locations-stack">
-        <div class="location-card" id="loc-1" onclick="selectVenue(1, 'Парк Кузьминки')">
-            <div class="loc-name">🌲 Парк Кузьминки</div>
-            <div class="loc-desc">Буквально 10 минут от Котельников. Огромный зеленый массив, пруды, деревянные набережные и куча тени.</div>
-        </div>
-        <div class="location-card" id="loc-2" onclick="selectVenue(2, 'Кино в Кузьминках (кинотеатр Высота)')">
-            <div class="loc-name">🍿 Сходить в кино («Высота» у м. Кузьминки)</div>
-            <div class="loc-desc">Если на улице будет слишком душно — спрячемся под кондеем в обновленном кинотеатре, наберем попкорна, а потом погуляем.</div>
-        </div>
-        <div class="location-card" id="loc-3" onclick="selectVenue(3, 'Усадьба Кусково')">
-            <div class="loc-name">🏛️ Романтичное Кусково</div>
-            <div class="loc-desc">Топовое атмосферное место на ЮВАО. Французский парк, старинный дворец у воды — идеальный маршрут для красивого свидания.</div>
-        </div>
-        <div class="location-card" id="loc-4" onclick="selectVenue(4, 'Усадьба Люблино')">
-            <div class="loc-name">🏡 Парк-усадьба Люблино</div>
-            <div class="loc-desc">Ухоженный и более тихий, камерный парк вокруг большого Люблинского пруда. Очень расслабленный вайб.</div>
-        </div>
-        <div class="location-card" id="loc-5" onclick="selectVenue(5, 'Таганский парк')">
-            <div class="loc-name">🚇 Таганский парк (ближе к центру)</div>
-            <div class="loc-desc">20 минут по прямой ветке. Уютный парк, а вокруг — сотни крутых атмосферных кафешек на любой вкус.</div>
-        </div>
-        <div class="location-card" id="loc-6" onclick="selectVenue(6, 'custom')">
-            <div class="loc-name">✨ Твое секретное место</div>
-            <div class="loc-desc">Если тебе хочется в какое-то другое конкретное место — пиши сюда.</div>
-        </div>
-    </div>
-    <div id="custom-venue-box" class="input-wrapper">
-        <input type="text" id="input-venue" class="custom-input" placeholder="Куда бы тебе хотелось?..." oninput="handleCustomChange()">
+    <!-- ===== ФЛИРТ ===== -->
+    <div class="flirt-block">
+        <p>
+            <span class="highlight">Честно:</span> я умею играть, но очень плохо 😄<br/>
+            Так что мы будем <span class="highlight">учиться вместе</span> —
+            и каждый мой промах станет поводом для смеха.
+        </p>
     </div>
 
+    <!-- ===== ВЫБОР ФОРМАТА ===== -->
+    <div class="format-label">🐾 выбери, как хочешь провести время</div>
+    <div class="format-grid" id="formatGrid">
+
+        <button class="format-btn" data-format="billiard">
+            <span class="icon">🎱</span>
+            <span class="title">Только бильярд</span>
+            <span class="desc">классика, без собак</span>
+        </button>
+
+        <button class="format-btn" data-format="billiard+dog">
+            <span class="icon">🐕</span>
+            <span class="title">Бильярд + прогулка</span>
+            <span class="desc">понимаю, как ты с ней намучилась, но если хочешь — просто погуляем в парке, без напряга</span>
+        </button>
+
+        <button class="format-btn" data-format="billiard+ocean">
+            <span class="icon">🐠</span>
+            <span class="title">Бильярд + Москвариум</span>
+            <span class="desc">нишево, но вдруг? 😅</span>
+        </button>
+
+    </div>
+
+    <!-- ===== МУЗЫКА ===== -->
+    <div class="music-block">
+        <label>
+            <span class="brent">Brent Faiyaz</span> — какой трек включим?
+            <span class="kanye">(а я поставлю тебе Канье по пути)</span>
+        </label>
+        <input type="text" id="songInput" placeholder="Напиши название..." />
+    </div>
+
+    <!-- ===== ДАТА ===== -->
+    <div class="section-label">📅 выбери день</div>
+    <div class="date-grid" id="dateGrid"></div>
+
+    <!-- ===== ВРЕМЯ ===== -->
+    <div class="section-label">⏱️ время (встреча на Трубной)</div>
+    <div class="time-grid" id="timeGrid"></div>
+
+    <!-- ===== КНОПКА (ССЫЛКА В ТГ) ===== -->
     <div class="submit-container">
-        <a href="#" id="submit-btn" class="tg-link">Отправить ответ 🤍</a>
+        <a href="#" id="submitBtn" class="tg-link">
+            💫 Написать в Telegram
+            <span class="subtext">выбери формат, дату и время</span>
+        </a>
     </div>
+
 </div>
 
 <script>
-    let pickedDate = null;
-    let pickedVenue = null;
+    // =============================================================
+    //  🎯 ТВОЙ USERNAME В TELEGRAM (без @)
+    // =============================================================
+    const TG_USERNAME = 'R0M4H';  // ← замени на свой username
 
-    const items = ['✨', '🍃', '🍿', '🥤', '☁️'];
+    // =============================================================
+    //  КОНФИГ
+    // =============================================================
+    const CONFIG = {
+        studyDate: new Date('2026-09-01'),
+        billiardPlace: 'Billie',
+        metro: 'Трубная',
+        workStart: 9,
+        workEnd: 18,
+        workEndFriday: 17,
+        availableDays: 7,
+        travelTime: 40,
+    };
 
-    function initBackground() {
-        const container = document.getElementById('ambient-flow');
-        if (!container) return;
-        for (let i = 0; i < 12; i++) {
-            const element = document.createElement('div');
-            element.classList.add('bg-particle');
-            element.innerText = items[Math.floor(Math.random() * items.length)];
-            element.style.left = Math.random() * 92 + 4 + '%';
-            element.style.setProperty('--duration', (Math.random() * 5 + 13) + 's');
-            element.style.setProperty('--drift', (Math.random() * 100 - 50) + 'px');
-            element.style.setProperty('--rot', (Math.random() * 360 - 180) + 'deg');
-            element.style.animationDelay = (Math.random() * -12) + 's';
-            container.appendChild(element);
+    // =============================================================
+    //  СОСТОЯНИЕ
+    // =============================================================
+    let selectedFormat = null;
+    let selectedDate = null;
+    let selectedTime = null;
+
+    // =============================================================
+    //  ТАЙМЕР
+    // =============================================================
+    function updateCountdown() {
+        const now = new Date();
+        const diff = CONFIG.studyDate - now;
+        if (diff <= 0) {
+            document.getElementById('daysLeft').textContent = '0';
+            return;
         }
+        const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+        document.getElementById('daysLeft').textContent = days;
     }
+    updateCountdown();
 
-    function selectDate(button, value) {
-        document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('selected'));
-        button.classList.add('selected');
-        const customBox = document.getElementById('custom-date-box');
-        if (value === 'custom') {
-            customBox.style.display = 'block';
-            pickedDate = document.getElementById('input-date').value || null;
-        } else {
-            customBox.style.display = 'none';
-            pickedDate = value;
-        }
-        checkStatus();
-    }
-
-    function selectVenue(id, value) {
-        document.querySelectorAll('.location-card').forEach(c => c.classList.remove('selected'));
-        document.getElementById(`loc-${id}`).classList.add('selected');
-        const customBox = document.getElementById('custom-venue-box');
-        if (value === 'custom') {
-            customBox.style.display = 'block';
-            pickedVenue = document.getElementById('input-venue').value || "Свой вариант";
-        } else {
-            customBox.style.display = 'none';
-            pickedVenue = value;
-        }
-        checkStatus();
-    }
-
-    function handleCustomChange() {
-        if (document.getElementById('custom-date-box').style.display === 'block') {
-            pickedDate = document.getElementById('input-date').value || null;
-        }
-        if (document.getElementById('custom-venue-box').style.display === 'block') {
-            pickedVenue = document.getElementById('input-venue').value || "Свой вариант";
-        }
-        checkStatus();
-    }
-
-    function checkStatus() {
-        const link = document.getElementById('submit-btn');
-        if (pickedDate && pickedVenue) {
-            link.classList.add('active');
-            const txt = `Планы на выходные 🍿\nКогда: ${pickedDate}\nФормат: ${pickedVenue}\n(а дальше по ходу пьесы)`;
-            link.href = `https://t.me/juwede12?text=${encodeURIComponent(txt)}`;
-        } else {
-            link.classList.remove('active');
-            link.removeAttribute('href');
-        }
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-        initBackground();
+    // =============================================================
+    //  ФОРМАТ
+    // =============================================================
+    document.querySelectorAll('.format-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedFormat = btn.dataset.format;
+            updateSubmitButton();
+        });
     });
+
+    // =============================================================
+    //  ДАТЫ
+    // =============================================================
+    const dateGrid = document.getElementById('dateGrid');
+    const timeGrid = document.getElementById('timeGrid');
+    const submitBtn = document.getElementById('submitBtn');
+    const songInput = document.getElementById('songInput');
+
+    function generateDates() {
+        const dates = [];
+        const now = new Date();
+        for (let i = 1; i <= CONFIG.availableDays; i++) {
+            const d = new Date(now);
+            d.setDate(d.getDate() + i);
+            dates.push(d);
+        }
+        return dates;
+    }
+
+    function formatDate(date) {
+        const weekdays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+        const months = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+        return {
+            weekday: weekdays[date.getDay()],
+            day: date.getDate(),
+            month: months[date.getMonth()],
+            full: date,
+        };
+    }
+
+    function renderDates() {
+        const dates = generateDates();
+        dateGrid.innerHTML = '';
+        dates.forEach(d => {
+            const f = formatDate(d);
+            const btn = document.createElement('button');
+            btn.className = 'date-btn';
+            btn.dataset.date = d.toISOString();
+            btn.innerHTML = `
+                <span class="day">${f.weekday}</span>
+                <span class="date-num">${f.day} ${f.month}</span>
+            `;
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedDate = d;
+                renderTimes();
+                updateSubmitButton();
+            });
+            dateGrid.appendChild(btn);
+        });
+    }
+
+    // =============================================================
+    //  ВРЕМЯ
+    // =============================================================
+    function renderTimes() {
+        timeGrid.innerHTML = '';
+
+        if (!selectedDate) {
+            const msg = document.createElement('div');
+            msg.style.cssText = 'color: rgba(200,180,165,0.25); font-size:13px; padding:8px 0;';
+            msg.textContent = 'Сначала выбери день ☝️';
+            timeGrid.appendChild(msg);
+            return;
+        }
+
+        const dow = selectedDate.getDay();
+        let endH = CONFIG.workEnd;
+        if (dow === 5) endH = CONFIG.workEndFriday;
+        if (dow === 0 || dow === 6) {
+            const msg = document.createElement('div');
+            msg.style.cssText = 'color: rgba(200,180,165,0.3); font-size:13px; padding:8px 0;';
+            msg.textContent = '😌 Выходной — выбери будний день';
+            timeGrid.appendChild(msg);
+            return;
+        }
+
+        const now = new Date();
+        const isToday = selectedDate.toDateString() === now.toDateString();
+
+        let hasTime = false;
+        for (let h = CONFIG.workStart; h < endH; h++) {
+            if (isToday && h <= now.getHours()) continue;
+
+            const timeStr = `${String(h).padStart(2, '0')}:00`;
+            const btn = document.createElement('button');
+            btn.className = 'time-btn';
+            btn.dataset.time = timeStr;
+
+            const leaveHour = h - Math.ceil(CONFIG.travelTime / 60);
+            const leaveMin = CONFIG.travelTime % 60;
+            let leaveStr = '';
+            if (leaveHour >= 0) {
+                leaveStr = `выезд ~${String(leaveHour).padStart(2, '0')}:${String(leaveMin).padStart(2, '0')}`;
+            } else {
+                leaveStr = '🚇';
+            }
+            btn.innerHTML = `${timeStr} <span class="sub-leave">${leaveStr}</span>`;
+
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedTime = timeStr;
+                updateSubmitButton();
+            });
+            timeGrid.appendChild(btn);
+            hasTime = true;
+        }
+
+        if (!hasTime) {
+            const msg = document.createElement('div');
+            msg.style.cssText = 'color: rgba(200,180,165,0.3); font-size:13px; padding:8px 0;';
+            msg.textContent = '😅 На этот день всё занято. Выбери другой день.';
+            timeGrid.appendChild(msg);
+        }
+    }
+
+    // =============================================================
+    //  КНОПКА
+    // =============================================================
+    function updateSubmitButton() {
+        const formatOk = selectedFormat !== null;
+        const dateOk = selectedDate !== null;
+        const timeOk = selectedTime !== null;
+        const song = songInput.value.trim() || '❤️ твой выбор';
+
+        if (formatOk && dateOk && timeOk) {
+            const dateStr = selectedDate.toLocaleDateString('ru-RU', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long'
+            });
+
+            let emoji = '🎱';
+            let formatLabel = 'бильярд';
+            if (selectedFormat === 'billiard+dog') {
+                emoji = '🐕';
+                formatLabel = 'бильярд + прогулка с собакой в парке (без напряга)';
+            } else if (selectedFormat === 'billiard+ocean') {
+                emoji = '🐠';
+                formatLabel = 'бильярд + Москвариум';
+            }
+
+            // Формируем сообщение для Telegram
+            const message = `🎱 Кристина согласилась!\n\n📅 ${dateStr}\n⏱️ ${selectedTime} (встреча на Трубной)\n${emoji} ${formatLabel}\n🎵 Трек: "${song}"\n\n❤️ Жду!`;
+
+            // Ссылка на Telegram
+            submitBtn.href = `https://t.me/${TG_USERNAME}?text=${encodeURIComponent(message)}`;
+            submitBtn.className = 'tg-link active';
+            submitBtn.innerHTML = `
+                💫 Написать в Telegram
+                <span class="subtext">нажми, чтобы отправить ответ</span>
+            `;
+        } else {
+            submitBtn.href = '#';
+            submitBtn.className = 'tg-link';
+            let hint = 'выбери';
+            if (!selectedFormat) hint += ' формат,';
+            if (!selectedDate) hint += ' дату,';
+            if (!selectedTime) hint += ' время';
+            submitBtn.innerHTML = `
+                💫 Написать в Telegram
+                <span class="subtext">${hint.replace(/,$/, '')}</span>
+            `;
+        }
+    }
+
+    // =============================================================
+    //  ОБНОВЛЕНИЕ КНОПКИ ПРИ ВВОДЕ ТРЕКА
+    // =============================================================
+    songInput.addEventListener('input', updateSubmitButton);
+
+    // =============================================================
+    //  СТАРТ
+    // =============================================================
+    renderDates();
+    renderTimes();
+    updateSubmitButton();
 </script>
 
 </body>
