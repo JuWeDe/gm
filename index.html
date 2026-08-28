@@ -244,20 +244,34 @@
             color: rgba(200, 180, 165, 0.25);
             margin-bottom: 12px;
         }
-        .date-grid {
+
+        /* ===== КАЛЕНДАРЬ (7 дней) ===== */
+        .calendar-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
-            gap: 8px;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
             margin-bottom: 16px;
+        }
+        .calendar-header {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: rgba(200, 180, 165, 0.2);
+            text-align: center;
+            padding: 4px 0;
+            font-weight: 600;
+        }
+        .calendar-header.weekend {
+            color: rgba(200, 180, 165, 0.1);
         }
         .date-btn {
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 16px;
-            padding: 12px 4px;
+            border-radius: 12px;
+            padding: 10px 2px;
             text-align: center;
             color: rgba(200, 185, 170, 0.4);
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 400;
             cursor: pointer;
             transition: all 0.25s ease;
@@ -266,12 +280,12 @@
         }
         .date-btn .day {
             font-weight: 600;
-            font-size: 15px;
-            color: rgba(220, 200, 185, 0.6);
+            font-size: 13px;
+            color: rgba(220, 200, 185, 0.5);
             display: block;
         }
         .date-btn .date-num {
-            font-size: 11px;
+            font-size: 10px;
             opacity: 0.4;
         }
         .date-btn:hover {
@@ -286,6 +300,12 @@
             box-shadow: 0 0 30px rgba(220, 180, 150, 0.04);
         }
         .date-btn.selected .day { color: #f0e5dc; }
+        .date-btn.weekend {
+            border-color: rgba(220, 180, 150, 0.08);
+        }
+        .date-btn.weekend .day {
+            color: rgba(220, 180, 150, 0.4);
+        }
 
         .time-grid {
             display: flex;
@@ -374,9 +394,11 @@
         }
 
         @media (max-width: 480px) {
-            .card { padding: 28px 18px 32px; border-radius: 32px; }
+            .card { padding: 28px 14px 32px; border-radius: 32px; }
             h1 { font-size: 26px; }
-            .date-grid { grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); }
+            .calendar-grid { gap: 3px; }
+            .date-btn { padding: 8px 2px; font-size: 11px; }
+            .date-btn .day { font-size: 12px; }
             .time-btn { padding: 8px 14px; font-size: 13px; }
         }
     </style>
@@ -449,9 +471,17 @@
         </p>
     </div>
 
-    <!-- ===== ДАТА ===== -->
+    <!-- ===== КАЛЕНДАРЬ (7 дней) ===== -->
     <div class="section-label">📅 выбери день</div>
-    <div class="date-grid" id="dateGrid"></div>
+    <div class="calendar-grid" id="calendarGrid">
+        <div class="calendar-header">Пн</div>
+        <div class="calendar-header">Вт</div>
+        <div class="calendar-header">Ср</div>
+        <div class="calendar-header">Чт</div>
+        <div class="calendar-header">Пт</div>
+        <div class="calendar-header weekend">Сб</div>
+        <div class="calendar-header weekend">Вс</div>
+    </div>
 
     <!-- ===== ВРЕМЯ ===== -->
     <div class="section-label">⏱️ время (встреча на Трубной)</div>
@@ -481,18 +511,22 @@
         billiardPlace: 'Billie',
         metro: 'Трубная',
         travelTime: 40,
-        availableDays: 14,
-        // Расписание: пн-чт после 18:00, пт после 17:00
-        schedule: {
-            1: { start: 18, end: 23 }, // Пн
-            2: { start: 18, end: 23 }, // Вт
-            3: { start: 18, end: 23 }, // Ср
-            4: { start: 18, end: 23 }, // Чт
-            5: { start: 17, end: 23 }, // Пт
-            // 0,6 — выходные (не показываем)
-        },
-        // День, с которого начинается календарь (29 августа 2026)
+        daysToShow: 21, // показываем 21 день (3 недели)
         startDate: new Date('2026-08-29'),
+        // Расписание:
+        // Пн-Чт: с 18:00
+        // Пт: с 17:00
+        // Сб-Вс: с 10:00 до 23:00
+        getSchedule: function(date) {
+            const dow = date.getDay();
+            if (dow === 0 || dow === 6) { // Сб или Вс
+                return { start: 10, end: 23 };
+            } else if (dow === 5) { // Пт
+                return { start: 17, end: 23 };
+            } else { // Пн-Чт
+                return { start: 18, end: 23 };
+            }
+        }
     };
 
     // =============================================================
@@ -551,52 +585,54 @@
     });
 
     // =============================================================
-    //  ДАТЫ (начинаются с 29 августа)
+    //  КАЛЕНДАРЬ (7 дней)
     // =============================================================
-    const dateGrid = document.getElementById('dateGrid');
+    const calendarGrid = document.getElementById('calendarGrid');
     const timeGrid = document.getElementById('timeGrid');
     const submitBtn = document.getElementById('submitBtn');
 
     function generateDates() {
         const dates = [];
         const start = new Date(CONFIG.startDate);
-        let daysAdded = 0;
-        let offset = 0;
-        const maxOffset = 30;
-
-        while (daysAdded < CONFIG.availableDays && offset < maxOffset) {
+        for (let i = 0; i < CONFIG.daysToShow; i++) {
             const d = new Date(start);
-            d.setDate(start.getDate() + offset);
-            const dow = d.getDay();
-            // Показываем только будние дни (пн-пт)
-            if (dow >= 1 && dow <= 5) {
-                dates.push(d);
-                daysAdded++;
-            }
-            offset++;
+            d.setDate(start.getDate() + i);
+            dates.push(d);
         }
         return dates;
     }
 
     function formatDate(date) {
-        const weekdays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+        const weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
         const months = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+        const dow = date.getDay();
+        // getDay: 0=Вс, 1=Пн...
+        const index = dow === 0 ? 6 : dow - 1;
         return {
-            weekday: weekdays[date.getDay()],
+            weekday: weekdays[index],
             day: date.getDate(),
             month: months[date.getMonth()],
             full: date,
+            isWeekend: (dow === 0 || dow === 6),
         };
     }
 
-    function renderDates() {
+    function renderCalendar() {
         const dates = generateDates();
-        dateGrid.innerHTML = '';
-        dates.forEach(d => {
-            const f = formatDate(d);
+
+        // Удаляем старые даты (оставляем только заголовки)
+        while (calendarGrid.children.length > 7) {
+            calendarGrid.removeChild(calendarGrid.lastChild);
+        }
+
+        dates.forEach(date => {
+            const f = formatDate(date);
             const btn = document.createElement('button');
             btn.className = 'date-btn';
-            btn.dataset.date = d.toISOString();
+            if (f.isWeekend) {
+                btn.classList.add('weekend');
+            }
+            btn.dataset.date = date.toISOString();
             btn.innerHTML = `
                 <span class="day">${f.weekday}</span>
                 <span class="date-num">${f.day} ${f.month}</span>
@@ -604,16 +640,16 @@
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('selected'));
                 btn.classList.add('selected');
-                selectedDate = d;
+                selectedDate = date;
                 renderTimes();
                 updateSubmitButton();
             });
-            dateGrid.appendChild(btn);
+            calendarGrid.appendChild(btn);
         });
     }
 
     // =============================================================
-    //  ВРЕМЯ
+    //  ВРЕМЯ (с учётом дня недели)
     // =============================================================
     function renderTimes() {
         timeGrid.innerHTML = '';
@@ -626,17 +662,7 @@
             return;
         }
 
-        const dow = selectedDate.getDay();
-        const schedule = CONFIG.schedule[dow];
-
-        if (!schedule) {
-            const msg = document.createElement('div');
-            msg.style.cssText = 'color: rgba(200,180,165,0.3); font-size:13px; padding:8px 0;';
-            msg.textContent = '😌 Выходной — выбери будний день';
-            timeGrid.appendChild(msg);
-            return;
-        }
-
+        const schedule = CONFIG.getSchedule(selectedDate);
         const now = new Date();
         const isToday = selectedDate.toDateString() === now.toDateString();
 
@@ -736,7 +762,7 @@
     // =============================================================
     //  СТАРТ
     // =============================================================
-    renderDates();
+    renderCalendar();
     renderTimes();
     updateSubmitButton();
 </script>
