@@ -306,6 +306,10 @@
         .date-btn.weekend .day {
             color: rgba(220, 180, 150, 0.4);
         }
+        .date-btn.empty {
+            visibility: hidden;
+            pointer-events: none;
+        }
 
         .time-grid {
             display: flex;
@@ -397,8 +401,9 @@
             .card { padding: 28px 14px 32px; border-radius: 32px; }
             h1 { font-size: 26px; }
             .calendar-grid { gap: 3px; }
-            .date-btn { padding: 8px 2px; font-size: 11px; }
-            .date-btn .day { font-size: 12px; }
+            .date-btn { padding: 8px 2px; font-size: 10px; }
+            .date-btn .day { font-size: 11px; }
+            .date-btn .date-num { font-size: 9px; }
             .time-btn { padding: 8px 14px; font-size: 13px; }
         }
     </style>
@@ -511,19 +516,15 @@
         billiardPlace: 'Billie',
         metro: 'Трубная',
         travelTime: 40,
-        daysToShow: 21, // показываем 21 день (3 недели)
+        weeksToShow: 3,
         startDate: new Date('2026-08-29'),
-        // Расписание:
-        // Пн-Чт: с 18:00
-        // Пт: с 17:00
-        // Сб-Вс: с 10:00 до 23:00
         getSchedule: function(date) {
             const dow = date.getDay();
-            if (dow === 0 || dow === 6) { // Сб или Вс
+            if (dow === 0 || dow === 6) {
                 return { start: 10, end: 23 };
-            } else if (dow === 5) { // Пт
+            } else if (dow === 5) {
                 return { start: 17, end: 23 };
-            } else { // Пн-Чт
+            } else {
                 return { start: 18, end: 23 };
             }
         }
@@ -585,71 +586,67 @@
     });
 
     // =============================================================
-    //  КАЛЕНДАРЬ (7 дней)
+    //  КАЛЕНДАРЬ (с выравниванием по дням недели)
     // =============================================================
     const calendarGrid = document.getElementById('calendarGrid');
     const timeGrid = document.getElementById('timeGrid');
     const submitBtn = document.getElementById('submitBtn');
 
-    function generateDates() {
-        const dates = [];
-        const start = new Date(CONFIG.startDate);
-        for (let i = 0; i < CONFIG.daysToShow; i++) {
-            const d = new Date(start);
-            d.setDate(start.getDate() + i);
-            dates.push(d);
-        }
-        return dates;
-    }
-
-    function formatDate(date) {
-        const weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-        const months = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
-        const dow = date.getDay();
-        // getDay: 0=Вс, 1=Пн...
-        const index = dow === 0 ? 6 : dow - 1;
-        return {
-            weekday: weekdays[index],
-            day: date.getDate(),
-            month: months[date.getMonth()],
-            full: date,
-            isWeekend: (dow === 0 || dow === 6),
-        };
-    }
-
     function renderCalendar() {
-        const dates = generateDates();
-
         // Удаляем старые даты (оставляем только заголовки)
         while (calendarGrid.children.length > 7) {
             calendarGrid.removeChild(calendarGrid.lastChild);
         }
 
-        dates.forEach(date => {
-            const f = formatDate(date);
+        const start = new Date(CONFIG.startDate);
+        const weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+        const months = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+
+        // Определяем, какой день недели у startDate (0=Вс, 1=Пн...)
+        let startDow = start.getDay(); // 0=Вс
+        // Преобразуем в индекс для нашей сетки (Пн=0, Вс=6)
+        let startIndex = startDow === 0 ? 6 : startDow - 1;
+
+        // Добавляем пустые ячейки до первой даты
+        for (let i = 0; i < startIndex; i++) {
+            const empty = document.createElement('div');
+            empty.className = 'date-btn empty';
+            calendarGrid.appendChild(empty);
+        }
+
+        // Генерируем даты
+        const totalDays = CONFIG.weeksToShow * 7;
+        for (let i = 0; i < totalDays; i++) {
+            const d = new Date(start);
+            d.setDate(start.getDate() + i);
+
+            const dow = d.getDay();
+            const isWeekend = (dow === 0 || dow === 6);
+            const dayName = weekdays[dow === 0 ? 6 : dow - 1];
+
             const btn = document.createElement('button');
             btn.className = 'date-btn';
-            if (f.isWeekend) {
+            if (isWeekend) {
                 btn.classList.add('weekend');
             }
-            btn.dataset.date = date.toISOString();
+            btn.dataset.date = d.toISOString();
             btn.innerHTML = `
-                <span class="day">${f.weekday}</span>
-                <span class="date-num">${f.day} ${f.month}</span>
+                <span class="day">${dayName}</span>
+                <span class="date-num">${d.getDate()} ${months[d.getMonth()]}</span>
             `;
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('selected'));
                 btn.classList.add('selected');
-                selectedDate = date;
+                selectedDate = d;
                 renderTimes();
                 updateSubmitButton();
             });
             calendarGrid.appendChild(btn);
-        });
+        }
     }
 
     // =============================================================
-    //  ВРЕМЯ (с учётом дня недели)
+    //  ВРЕМЯ
     // =============================================================
     function renderTimes() {
         timeGrid.innerHTML = '';
