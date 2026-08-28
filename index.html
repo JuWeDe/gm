@@ -471,7 +471,7 @@
     // =============================================================
     //  ТВОЙ USERNAME В TELEGRAM (без @)
     // =============================================================
-    const TG_USERNAME = 'R0M4H'; 
+    const TG_USERNAME = 'R0M4H';  // ← замени на свой
 
     // =============================================================
     //  КОНФИГ
@@ -490,7 +490,9 @@
             4: { start: 18, end: 23 }, // Чт
             5: { start: 17, end: 23 }, // Пт
             // 0,6 — выходные (не показываем)
-        }
+        },
+        // День, с которого начинается календарь (29 августа 2026)
+        startDate: new Date('2026-08-29'),
     };
 
     // =============================================================
@@ -549,7 +551,7 @@
     });
 
     // =============================================================
-    //  ДАТЫ
+    //  ДАТЫ (начинаются с 29 августа)
     // =============================================================
     const dateGrid = document.getElementById('dateGrid');
     const timeGrid = document.getElementById('timeGrid');
@@ -557,21 +559,21 @@
 
     function generateDates() {
         const dates = [];
-        const now = new Date();
+        const start = new Date(CONFIG.startDate);
         let daysAdded = 0;
-        let attempts = 0;
-        const maxAttempts = 30;
+        let offset = 0;
+        const maxOffset = 30;
 
-        while (daysAdded < CONFIG.availableDays && attempts < maxAttempts) {
-            attempts++;
-            const d = new Date(now);
-            d.setDate(d.getDate() + attempts);
+        while (daysAdded < CONFIG.availableDays && offset < maxOffset) {
+            const d = new Date(start);
+            d.setDate(start.getDate() + offset);
             const dow = d.getDay();
             // Показываем только будние дни (пн-пт)
             if (dow >= 1 && dow <= 5) {
                 dates.push(d);
                 daysAdded++;
             }
+            offset++;
         }
         return dates;
     }
@@ -611,7 +613,7 @@
     }
 
     // =============================================================
-    //  ВРЕМЯ (с учётом нового расписания)
+    //  ВРЕМЯ
     // =============================================================
     function renderTimes() {
         timeGrid.innerHTML = '';
@@ -639,10 +641,8 @@
         const isToday = selectedDate.toDateString() === now.toDateString();
 
         let hasTime = false;
-        // Показываем время с шагом 30 минут
         for (let h = schedule.start; h < schedule.end; h++) {
             for (let m = 0; m < 60; m += 30) {
-                // Пропускаем время, которое уже прошло сегодня
                 if (isToday && (h < now.getHours() || (h === now.getHours() && m <= now.getMinutes()))) {
                     continue;
                 }
@@ -652,7 +652,6 @@
                 btn.className = 'time-btn';
                 btn.dataset.time = timeStr;
 
-                // Время выезда с учётом дороги
                 const totalMinutes = h * 60 + m - CONFIG.travelTime;
                 let leaveHour = Math.floor(totalMinutes / 60);
                 let leaveMin = totalMinutes % 60;
